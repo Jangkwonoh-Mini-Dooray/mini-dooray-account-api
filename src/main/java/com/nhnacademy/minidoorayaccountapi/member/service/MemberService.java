@@ -8,9 +8,9 @@ import java.util.List;
 public interface MemberService {
     List<MemberDto> getMembers();
 
-    List<MemberDto> getMember(Long memberId);
-//
-//    Member createMember(Member member);
+    MemberDto getMember(Long memberId);
+
+    MemberDto createMember(MemberDto memberDto);
 //
 //    String deleteMember(String memberId);
 }

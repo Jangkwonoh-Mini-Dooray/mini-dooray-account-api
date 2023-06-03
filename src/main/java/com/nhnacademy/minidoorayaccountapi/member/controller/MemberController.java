@@ -19,7 +19,12 @@ public class MemberController {
     }
 
     @GetMapping("/{memberId}")
-    public MemberDto getMember(@PathVariable String memberId) {
-        return memberService.getAccount(memberId);
+    public MemberDto getMember(@PathVariable Long memberId) {
+        return memberService.getMember(memberId);
+    }
+
+    @PostMapping
+    public MemberDto createMember(@RequestBody Account account) {
+        return accountService.createAccount(account);
     }
 }

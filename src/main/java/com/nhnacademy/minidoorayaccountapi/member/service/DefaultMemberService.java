@@ -1,6 +1,7 @@
 package com.nhnacademy.minidoorayaccountapi.member.service;
 
 import com.nhnacademy.minidoorayaccountapi.member.dto.MemberDto;
+import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
 import com.nhnacademy.minidoorayaccountapi.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,14 @@ public class DefaultMemberService implements MemberService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<MemberDto> getMember(Long memberId) {
+    public MemberDto getMember(Long memberId) {
         return memberRepository.findMemberDto(memberId);
     }
+
+    @Override
+    public MemberDto createMember(MemberDto memberDto) {
+        return null;
+    }
+
+
 }

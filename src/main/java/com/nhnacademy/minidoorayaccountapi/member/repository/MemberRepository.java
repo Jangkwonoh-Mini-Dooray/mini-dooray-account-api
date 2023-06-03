@@ -9,5 +9,5 @@ import java.util.List;
 public interface MemberRepository extends JpaRepository<Member, Long> {
     List<MemberDto> findAllMemberDto();
 
-    List<MemberDto> findMemberDto(Long memberId);
+    MemberDto findMemberDto(Long memberId);
 }
