@@ -32,6 +32,11 @@ public class DefaultMemberService implements MemberService {
     }
 
     @Override
+    public String updateMemberDto(Long memberId) {
+        return memberRepository.updateMemberDto(memberId);
+    }
+
+    @Override
     public String deleteMemberDto(Long memberId) {
         return memberRepository.deleteMemberDto(memberId);
     }

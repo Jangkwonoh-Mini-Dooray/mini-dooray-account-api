@@ -28,6 +28,11 @@ public class MemberController {
         return memberService.createMember(memberDto);
     }
 
+    @PutMapping("/{memberId}")
+    public String updateMember(@PathVariable Long memberId) {
+        return memberService.updateMemberDto(memberId);
+    }
+
     @DeleteMapping("/{memberId}")
     public String deleteMember(@PathVariable Long memberId) {
         return memberService.deleteMemberDto(memberId);

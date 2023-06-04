@@ -12,5 +12,7 @@ public interface MemberService {
 
     MemberDto createMember(MemberDto memberDto);
 
+    String updateMemberDto(Long memberId);
+
     String deleteMemberDto(Long memberId);
 }
