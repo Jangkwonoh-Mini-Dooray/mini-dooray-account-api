@@ -28,7 +28,12 @@ public class DefaultMemberService implements MemberService {
 
     @Override
     public MemberDto createMember(MemberDto memberDto) {
-        return null;
+        return memberRepository.createMemberDto(memberDto);
+    }
+
+    @Override
+    public String deleteMemberDto(Long memberId) {
+        return memberRepository.deleteMemberDto(memberId);
     }
 
 
