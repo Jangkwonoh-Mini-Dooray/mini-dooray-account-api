@@ -24,7 +24,12 @@ public class MemberController {
     }
 
     @PostMapping
-    public MemberDto createMember(@RequestBody Account account) {
-        return accountService.createAccount(account);
+    public MemberDto createMember(@RequestBody MemberDto memberDto) {
+        return memberService.createMember(memberDto);
+    }
+
+    @DeleteMapping("/{memberId}")
+    public String deleteMember(@PathVariable Long memberId) {
+        return memberService.deleteMemberDto(memberId);
     }
 }

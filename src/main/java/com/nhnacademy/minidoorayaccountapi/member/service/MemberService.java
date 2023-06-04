@@ -11,6 +11,6 @@ public interface MemberService {
     MemberDto getMember(Long memberId);
 
     MemberDto createMember(MemberDto memberDto);
-//
-//    String deleteMember(String memberId);
+
+    String deleteMemberDto(Long memberId);
 }
