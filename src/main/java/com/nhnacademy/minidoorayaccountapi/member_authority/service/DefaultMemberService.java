@@ -1,4 +1,4 @@
-package com.nhnacademy.minidoorayaccountapi.memberAuthority.service;
+package com.nhnacademy.minidoorayaccountapi.member_authority.service;
 
 public class DefaultMemberService implements MemberAuthorityService{
 }

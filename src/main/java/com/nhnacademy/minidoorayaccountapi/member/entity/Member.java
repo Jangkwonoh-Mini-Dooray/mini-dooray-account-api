@@ -1,7 +1,7 @@
 package com.nhnacademy.minidoorayaccountapi.member.entity;
 
-import com.nhnacademy.minidoorayaccountapi.memberAuthority.entity.MemberAuthority;
-import com.nhnacademy.minidoorayaccountapi.memberStatus.entity.MemberStatus;
+import com.nhnacademy.minidoorayaccountapi.member_authority.entity.MemberAuthority;
+import com.nhnacademy.minidoorayaccountapi.member_status.entity.MemberStatus;
 
 import javax.persistence.*;
 

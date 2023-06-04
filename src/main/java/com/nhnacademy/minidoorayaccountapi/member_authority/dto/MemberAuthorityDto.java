@@ -1,4 +1,4 @@
-package com.nhnacademy.minidoorayaccountapi.memberStatus.dto;
+package com.nhnacademy.minidoorayaccountapi.member_authority.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class MemberStatusDto {
+public class MemberAuthorityDto {
     private String status;
 }
