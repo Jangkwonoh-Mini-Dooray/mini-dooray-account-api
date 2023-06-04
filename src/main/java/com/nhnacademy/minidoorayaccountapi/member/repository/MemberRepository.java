@@ -14,5 +14,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     MemberDto createMemberDto(MemberDto memberDto);
 
+    String updateMemberDto(Long memberId);
+
     String deleteMemberDto(Long memberId);
 }
