@@ -1,4 +1,4 @@
-package com.nhnacademy.minidoorayaccountapi.memberAuthority.entity;
+package com.nhnacademy.minidoorayaccountapi.member_authority.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

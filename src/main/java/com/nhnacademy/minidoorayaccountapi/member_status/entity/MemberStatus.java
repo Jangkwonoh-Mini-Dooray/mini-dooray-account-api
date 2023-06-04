@@ -1,4 +1,4 @@
-package com.nhnacademy.minidoorayaccountapi.memberStatus.entity;
+package com.nhnacademy.minidoorayaccountapi.member_status.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
