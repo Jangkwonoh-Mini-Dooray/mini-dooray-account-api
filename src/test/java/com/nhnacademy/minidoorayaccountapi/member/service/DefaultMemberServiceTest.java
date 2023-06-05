@@ -1,43 +1,52 @@
 package com.nhnacademy.minidoorayaccountapi.member.service;
 
 import com.nhnacademy.minidoorayaccountapi.member.dto.MemberDto;
+import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
 import com.nhnacademy.minidoorayaccountapi.member.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.Collections;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class DefaultMemberServiceTest {
+
     @Autowired
-    DefaultMemberService memberService;
+    private DefaultMemberService memberService;
 
     @MockBean
     private MemberRepository memberRepository;
 
     @Test
-    void getMembersTest() throws Exception {
-        MemberDto memberDto = new MemberDto();
-        memberDto.setId("testId");
-        memberDto.setPassword("testPassword");
-        memberDto.setEmail("testEmail");
-        memberDto.setName("testName");
+    public void getMembersTest() {
+        Member member1 = new Member();
+        member1.setMemberId("member1");
+        member1.setEmail("member1@test.com");
+        member1.setName("Member 1");
 
-        given(memberRepository.findAllMemberDto()).willReturn(Collections.singletonList(memberDto));
+        Member member2 = new Member();
+        member2.setMemberId("member2");
+        member2.setEmail("member2@test.com");
+        member2.setName("Member 2");
 
-        List<MemberDto> members = memberService.getMembers();
+        when(memberRepository.findAll()).thenReturn(Arrays.asList(member1, member2));
 
-        assertThat(members).hasSize(1);
-        MemberDto actualMemberDto = members.get(0);
-        assertThat(actualMemberDto.getId()).isEqualTo("testId");
-        assertThat(actualMemberDto.getPassword()).isEqualTo("testPassword");
-        assertThat(actualMemberDto.getEmail()).isEqualTo("testEmail");
-        assertThat(actualMemberDto.getName()).isEqualTo("testName");
+        List<MemberDto> memberDtoList = memberService.getMembers();
+
+        assertEquals(2, memberDtoList.size());
+
+        assertEquals("member1", memberDtoList.get(0).getMemberId());
+        assertEquals("member1@test.com", memberDtoList.get(0).getEmail());
+        assertEquals("Member 1", memberDtoList.get(0).getName());
+
+        assertEquals("member2", memberDtoList.get(1).getMemberId());
+        assertEquals("member2@test.com", memberDtoList.get(1).getEmail());
+        assertEquals("Member 2", memberDtoList.get(1).getName());
     }
 }

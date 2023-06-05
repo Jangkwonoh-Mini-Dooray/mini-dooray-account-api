@@ -8,11 +8,11 @@ import java.util.List;
 public interface MemberService {
     List<MemberDto> getMembers();
 
-    MemberDto getMember(Long memberId);
+    MemberDto getMember(String memberId);
 
-    MemberDto createMember(MemberDto memberDto);
+    void createMember(MemberDto memberDto);
 
-    String updateMemberDto(Long memberId);
+    void updateMember(String memberId, MemberDto memberDto);
 
-    String deleteMemberDto(Long memberId);
+    void deleteMember(String memberId);
 }

@@ -4,4 +4,5 @@ import com.nhnacademy.minidoorayaccountapi.member_authority.entity.MemberAuthori
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberAuthorityRepository extends JpaRepository<MemberAuthority, Integer> {
+
 }
