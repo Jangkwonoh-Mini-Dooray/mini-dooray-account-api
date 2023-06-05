@@ -19,16 +19,13 @@ public class DefaultMemberService implements MemberService {
     @Override
     @Transactional(readOnly = true)
     public List<MemberDto> getMembers() {
-        return memberRepository.findAll().stream()
-                .map(member -> new MemberDto(member.getMemberId(), member.getEmail(), member.getName()))
-                .collect(Collectors.toList());
+        return memberRepository.getMembersBy();
     }
 
     @Override
     @Transactional(readOnly = true)
     public MemberDto getMember(String memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException());
-        return new MemberDto(member.getMemberId(), member.getEmail(), member.getName());
+        return memberRepository.getMemberByMemberId(memberId);
     }
 
     @Override
@@ -39,7 +36,6 @@ public class DefaultMemberService implements MemberService {
         member.setPassword(memberDto.getPassword());
         member.setEmail(memberDto.getEmail());
         member.setName(memberDto.getName());
-
         memberRepository.save(member);
     }
 
@@ -48,11 +44,9 @@ public class DefaultMemberService implements MemberService {
     @Transactional
     public void updateMember(String memberId, MemberDto memberDto) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException());
-
         member.setPassword(memberDto.getPassword());
         member.setEmail(memberDto.getEmail());
         member.setName(memberDto.getName());
-
         memberRepository.save(member);
     }
     

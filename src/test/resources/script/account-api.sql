@@ -37,16 +37,16 @@ CREATE TABLE `member`
 
 -- member_status 테이블 데이터 추가
 
-MERGE INTO member_status
+INSERT INTO member_status
 VALUES (1, '가입');
-MERGE INTO member_status
+INSERT INTO member_status
 VALUES (2, '탈퇴');
-MERGE INTO member_status
+INSERT INTO member_status
 VALUES (3, '휴면');
 
 -- member_authority 테이블 데이터 추가
 
-MERGE INTO member_authority
+INSERT INTO member_authority
 VALUES (1, 'ADMIN');
-MERGE INTO member_authority
+INSERT INTO member_authority
 VALUES (2, 'MEMBER');
