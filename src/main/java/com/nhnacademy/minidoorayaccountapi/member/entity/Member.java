@@ -17,7 +17,7 @@ import javax.persistence.*;
 public class Member {
     @Id
     @Column(name = "mamber_id")
-    private Long memberId;
+    private String memberId;
 
     @ManyToOne
     @JoinColumn(name = "mamber_status_id")
