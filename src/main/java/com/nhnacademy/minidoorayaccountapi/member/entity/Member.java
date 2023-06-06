@@ -11,8 +11,8 @@ import javax.persistence.*;
 @ToString
 @EqualsAndHashCode
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "member")
 public class Member {
     @Id

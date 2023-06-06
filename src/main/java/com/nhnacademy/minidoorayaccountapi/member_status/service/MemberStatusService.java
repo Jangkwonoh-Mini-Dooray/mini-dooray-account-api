@@ -1,6 +1,5 @@
 package com.nhnacademy.minidoorayaccountapi.member_status.service;
 
-import com.nhnacademy.minidoorayaccountapi.member_authority.dto.MemberAuthorityDto;
 import com.nhnacademy.minidoorayaccountapi.member_status.dto.MemberStatusDto;
 
 public interface MemberStatusService {

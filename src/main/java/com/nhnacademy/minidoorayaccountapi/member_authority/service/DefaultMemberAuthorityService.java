@@ -1,7 +1,6 @@
 package com.nhnacademy.minidoorayaccountapi.member_authority.service;
 
 import com.nhnacademy.minidoorayaccountapi.exception.MemberNotFoundException;
-import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
 import com.nhnacademy.minidoorayaccountapi.member_authority.dto.MemberAuthorityDto;
 import com.nhnacademy.minidoorayaccountapi.member_authority.entity.MemberAuthority;
 import com.nhnacademy.minidoorayaccountapi.member_authority.repository.MemberAuthorityRepository;
