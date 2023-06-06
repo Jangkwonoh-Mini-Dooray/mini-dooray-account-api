@@ -40,20 +40,21 @@ class MemberRepositoryTest {
         testEntityManager.persist(member1);
         testEntityManager.persist(member2);
 
-        List<GetMemberDto> getMemberDtoList = memberRepository.getMembers();
+        List<GetMemberDto> memberDtoList = memberRepository.getMembers();
 
-        assertThat(getMemberDtoList).isNotEmpty().hasSize(2);
+        assertThat(memberDtoList).isNotEmpty().hasSize(2);
 
-        assertThat(getMemberDtoList.get(0).getMemberId()).isEqualTo(member1.getMemberId());
-        assertThat(getMemberDtoList.get(0).getEmail()).isEqualTo(member1.getEmail());
-        assertThat(getMemberDtoList.get(0).getName()).isEqualTo(member1.getName());
+        assertThat(memberDtoList.get(0).getMemberId()).isEqualTo(member1.getMemberId());
+        assertThat(memberDtoList.get(0).getEmail()).isEqualTo(member1.getEmail());
+        assertThat(memberDtoList.get(0).getName()).isEqualTo(member1.getName());
 
-        assertThat(getMemberDtoList.get(1).getMemberId()).isEqualTo(member2.getMemberId());
-        assertThat(getMemberDtoList.get(1).getEmail()).isEqualTo(member2.getEmail());
-        assertThat(getMemberDtoList.get(1).getName()).isEqualTo(member2.getName());
+        assertThat(memberDtoList.get(1).getMemberId()).isEqualTo(member2.getMemberId());
+        assertThat(memberDtoList.get(1).getEmail()).isEqualTo(member2.getEmail());
+        assertThat(memberDtoList.get(1).getName()).isEqualTo(member2.getName());
     }
 
     @Test
+    @Order(2)
     @DisplayName("회원 정보 단건 조회 test")
     void getMemberByMemberId() {
         Member member = new Member();

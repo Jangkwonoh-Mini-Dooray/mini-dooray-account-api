@@ -24,7 +24,7 @@ CREATE TABLE `member`
 (
     `member_id`        VARCHAR(30) primary key,
     `member_status_id` INT DEFAULT 1,
-    `member_authority_id`     INT DEFAULT 2,
+    `authority_id`     INT DEFAULT 2,
     `password`         VARCHAR(300) NOT NULL,
     `email`            VARCHAR(30)  NOT NULL,
     `name`             VARCHAR(20)  NOT NULL,
