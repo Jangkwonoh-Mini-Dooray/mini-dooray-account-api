@@ -1,5 +1,6 @@
 package com.nhnacademy.minidoorayaccountapi.member.controller;
 
+import com.nhnacademy.minidoorayaccountapi.member.dto.GetMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.MemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -15,24 +16,24 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping
-    public ResponseEntity<List<MemberDto>> getAllMembers() {
-        return ResponseEntity.ok(memberService.getMembers());
+    public ResponseEntity<List<GetMemberDto>> getAllMembers() {
+        return ResponseEntity.ok().body(memberService.getMembers());
     }
 
     @GetMapping("/{memberId}")
-    public ResponseEntity<MemberDto> getMember(@PathVariable String memberId) {
-        return ResponseEntity.ok(memberService.getMember(memberId));
+    public ResponseEntity<GetMemberDto> getMember(@PathVariable String memberId) {
+        return ResponseEntity.ok().body(memberService.getMember(memberId));
     }
 
     @PostMapping
-    public ResponseEntity<Void> createMember(@RequestBody MemberDto memberDto) {
-        memberService.createMember(memberDto);
+    public ResponseEntity<Void> createMember(@RequestBody MemberDto postMemberDto) {
+        memberService.createMember(postMemberDto);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{memberId}")
-    public ResponseEntity<Void> updateMember(@PathVariable String memberId, @RequestBody MemberDto memberDto) {
-        memberService.updateMember(memberId, memberDto);
+    public ResponseEntity<Void> updateMember(@PathVariable String memberId, @RequestBody MemberDto putMemberDto) {
+        memberService.updateMember(memberId, putMemberDto);
         return ResponseEntity.ok().build();
     }
 
