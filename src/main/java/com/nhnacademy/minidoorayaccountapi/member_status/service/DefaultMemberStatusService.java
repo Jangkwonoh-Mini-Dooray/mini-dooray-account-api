@@ -1,6 +1,7 @@
 package com.nhnacademy.minidoorayaccountapi.member_status.service;
 
-import com.nhnacademy.minidoorayaccountapi.exception.MemberNotFoundException;
+import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberException;
+import com.nhnacademy.minidoorayaccountapi.exception.NotFoundStatusException;
 import com.nhnacademy.minidoorayaccountapi.member_status.dto.MemberStatusDto;
 import com.nhnacademy.minidoorayaccountapi.member_status.entity.MemberStatus;
 import com.nhnacademy.minidoorayaccountapi.member_status.repository.MemberStatusRepository;
@@ -19,7 +20,7 @@ public class DefaultMemberStatusService implements MemberStatusService{
     @Override
     public void updateMemberStatus(int memberStatusId, MemberStatusDto memberStatusDto) {
         MemberStatus memberStatus = memberStatusRepository.findById(memberStatusId)
-                .orElseThrow(() -> new MemberNotFoundException());
+                .orElseThrow(() -> new NotFoundStatusException(memberStatusId));
         memberStatus.setStatus(memberStatusDto.getStatus());
         memberStatusRepository.save(memberStatus);
     }
