@@ -24,7 +24,7 @@ public class Member {
     private MemberStatus memberStatus;
 
     @ManyToOne
-    @JoinColumn(name = "authority_id")
+    @JoinColumn(name = "member_authority_id")
     private MemberAuthority memberAuthority;
 
     private String password;
