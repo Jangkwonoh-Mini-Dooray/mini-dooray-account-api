@@ -134,7 +134,8 @@ class DefaultMemberServiceTest {
         assertThat(savedMember.getEmail()).isEqualTo(memberDto.getEmail());
         assertThat(savedMember.getName()).isEqualTo(memberDto.getName());
         assertThat(savedMember.getMemberStatus().getMemberStatusId()).isEqualTo(defaultStatus.getMemberStatusId());
-        assertThat(savedMember.getMemberAuthority().getAuthorityId()).isEqualTo(defaultAuthority.getAuthorityId());
+        assertThat(savedMember.getMemberAuthority().getMemberAuthorityId())
+                .isEqualTo(defaultAuthority.getMemberAuthorityId());
     }
 
     @Test
@@ -153,12 +154,12 @@ class DefaultMemberServiceTest {
     @Order(5)
     @DisplayName("회원 정보 생성 실패 (default authority 존재하지 않음)")
     void createMemberNonExistingAuthority() {
-        given(memberAuthorityRepository.findById(defaultAuthority.getAuthorityId()))
+        given(memberAuthorityRepository.findById(defaultAuthority.getMemberAuthorityId()))
                 .willReturn(Optional.empty());
 
         assertThatThrownBy(() -> memberService.createMember(memberDto))
                 .isInstanceOf(NotFoundAuthorityException.class)
-                .hasMessageContaining(String.valueOf(defaultAuthority.getAuthorityId()));
+                .hasMessageContaining(String.valueOf(defaultAuthority.getMemberAuthorityId()));
     }
 
     @Test
