@@ -1,6 +1,8 @@
 package com.nhnacademy.minidoorayaccountapi.member.service;
 
-import com.nhnacademy.minidoorayaccountapi.exception.MemberNotFoundException;
+import com.nhnacademy.minidoorayaccountapi.exception.NotFoundAuthorityException;
+import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberException;
+import com.nhnacademy.minidoorayaccountapi.exception.NotFoundStatusException;
 import com.nhnacademy.minidoorayaccountapi.member.dto.GetMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.MemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
@@ -49,9 +51,9 @@ public class DefaultMemberService implements MemberService {
 //        `member_status_id`        INT DEFAULT 1,
 //        `authority_id`     INT DEFAULT 2,
         MemberStatus defaultStatus = memberStatusRepository.findById(1)
-                .orElseThrow(MemberNotFoundException::new);
+                .orElseThrow(() -> new NotFoundStatusException(1));
         MemberAuthority defaultAuthority = memberAuthorityRepository.findById(2)
-                .orElseThrow(MemberNotFoundException::new);
+                .orElseThrow(() -> new NotFoundAuthorityException(2));
 
         member.setMemberStatus(defaultStatus);
         member.setMemberAuthority(defaultAuthority);
@@ -62,7 +64,8 @@ public class DefaultMemberService implements MemberService {
     @Override
     @Transactional
     public void updateMember(String memberId, MemberDto memberDto) {
-        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundMemberException(memberId));
         member.setPassword(memberDto.getPassword());
         member.setEmail(memberDto.getEmail());
         member.setName(memberDto.getName());
@@ -74,7 +77,7 @@ public class DefaultMemberService implements MemberService {
     @Transactional
     public void deleteMember(String memberId) {
         if (!memberRepository.existsById(memberId)) {
-            throw new MemberNotFoundException();
+            throw new NotFoundMemberException(memberId);
         }
         memberRepository.deleteById(memberId);
     }

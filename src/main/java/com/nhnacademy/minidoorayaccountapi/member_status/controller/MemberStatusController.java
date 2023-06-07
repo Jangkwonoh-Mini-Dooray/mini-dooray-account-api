@@ -1,6 +1,6 @@
 package com.nhnacademy.minidoorayaccountapi.member_status.controller;
 
-import com.nhnacademy.minidoorayaccountapi.exception.MemberNotFoundException;
+import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberException;
 import com.nhnacademy.minidoorayaccountapi.member.repository.MemberRepository;
 import com.nhnacademy.minidoorayaccountapi.member_status.dto.MemberStatusDto;
 import com.nhnacademy.minidoorayaccountapi.member_status.entity.MemberStatus;
@@ -18,7 +18,7 @@ public class MemberStatusController {
     @GetMapping
     public ResponseEntity<MemberStatusDto> getMemberStatus(@PathVariable("member-id") String memberId) {
         MemberStatus memberStatus = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException())
+                .orElseThrow(() -> new NotFoundMemberException(memberId))
                 .getMemberStatus();
         return ResponseEntity.ok(memberStatusService.getMemberStatus(memberStatus.getMemberStatusId()));
     }
@@ -27,7 +27,7 @@ public class MemberStatusController {
     public ResponseEntity<Void> updateMemberStatus(@PathVariable("member-id") String memberId,
                                                       @RequestBody MemberStatusDto memberStatusDto) {
         MemberStatus memberStatus = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException())
+                .orElseThrow(() -> new NotFoundMemberException(memberId))
                 .getMemberStatus();
         memberStatusService.updateMemberStatus(memberStatus.getMemberStatusId(), memberStatusDto);
         return ResponseEntity.ok().build();
