@@ -26,7 +26,6 @@ class MemberRepositoryTest {
 
     @BeforeEach
     void setUp() {
-
         member1 = new Member();
         member1.setMemberId("member1-id");
         member1.setEmail("member1-email");
@@ -61,7 +60,7 @@ class MemberRepositoryTest {
     @Test
     @Order(2)
     @DisplayName("회원 정보 단건 조회")
-    void getMemberByMemberId() {
+    void getMember() {
         testEntityManager.persist(member1);
 
         GetMemberDto getMemberDto = memberRepository.getMember(member1.getMemberId());
