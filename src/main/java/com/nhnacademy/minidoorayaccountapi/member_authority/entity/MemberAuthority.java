@@ -18,7 +18,7 @@ import javax.persistence.Table;
 public class MemberAuthority {
     @Id
     @Column(name = "member_authority_id")
-    private int authorityId;
+    private int memberAuthorityId;
 
     private String status;
 }

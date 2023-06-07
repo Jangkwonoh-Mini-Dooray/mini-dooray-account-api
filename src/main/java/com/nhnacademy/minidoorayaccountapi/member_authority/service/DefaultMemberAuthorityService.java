@@ -14,14 +14,14 @@ public class DefaultMemberAuthorityService implements MemberAuthorityService{
     private final MemberAuthorityRepository memberAuthorityRepository;
 
     @Override
-    public MemberAuthorityDto getMemberAuthority(int authorityId) {
-        return memberAuthorityRepository.getAuthorityByAuthorityId(authorityId);
+    public MemberAuthorityDto getMemberAuthority(int memberAuthorityId) {
+        return memberAuthorityRepository.getMemberAuthority(memberAuthorityId);
     }
 
     @Override
-    public void updateMemberAuthority(int authorityId, MemberAuthorityDto memberAuthorityDto) {
-        MemberAuthority memberAuthority = memberAuthorityRepository.findById(authorityId)
-                .orElseThrow(() -> new NotFoundAuthorityException(authorityId));
+    public void updateMemberAuthority(int memberAuthorityId, MemberAuthorityDto memberAuthorityDto) {
+        MemberAuthority memberAuthority = memberAuthorityRepository.findById(memberAuthorityId)
+                .orElseThrow(() -> new NotFoundAuthorityException(memberAuthorityId));
         memberAuthority.setStatus(memberAuthorityDto.getStatus());
 
         memberAuthorityRepository.save(memberAuthority);

@@ -20,7 +20,7 @@ public class MemberAuthorityController {
         MemberAuthority memberAuthority = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundMemberException(memberId))
                 .getMemberAuthority();
-        return ResponseEntity.ok(memberAuthorityService.getMemberAuthority(memberAuthority.getAuthorityId()));
+        return ResponseEntity.ok(memberAuthorityService.getMemberAuthority(memberAuthority.getMemberAuthorityId()));
     }
 
     @PutMapping
@@ -29,7 +29,7 @@ public class MemberAuthorityController {
         MemberAuthority memberAuthority = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundMemberException(memberId))
                 .getMemberAuthority();
-        memberAuthorityService.updateMemberAuthority(memberAuthority.getAuthorityId(), memberAuthorityDto);
+        memberAuthorityService.updateMemberAuthority(memberAuthority.getMemberAuthorityId(), memberAuthorityDto);
         return ResponseEntity.ok().build();
     }
 }

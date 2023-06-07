@@ -1,5 +1,14 @@
 package com.nhnacademy.minidoorayaccountapi.member_authority.dto;
 
-public interface MemberAuthorityDto {
-    String getStatus();
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class MemberAuthorityDto {
+    private String status;
 }
