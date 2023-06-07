@@ -14,12 +14,10 @@ public class MemberStatusRepositoryImpl extends QuerydslRepositorySupport implem
 
     @Override
     public MemberStatusDto getMemberStatus(int memberStatusId) {
-        QMember qMember = QMember.member;
         QMemberStatus qMemberStatus = QMemberStatus.memberStatus;
 
         return from(qMemberStatus)
-                .innerJoin(qMember.memberStatus, qMemberStatus)
-                .where(qMember.memberStatus.memberStatusId.eq(memberStatusId))
+                .where(qMemberStatus.memberStatusId.eq(memberStatusId))
                 .select(Projections.bean(MemberStatusDto.class,
                         qMemberStatus.status))
                 .fetchOne();
