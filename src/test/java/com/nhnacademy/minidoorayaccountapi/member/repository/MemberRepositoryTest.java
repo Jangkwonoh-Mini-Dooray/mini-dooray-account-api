@@ -40,7 +40,7 @@ class MemberRepositoryTest {
 
     @Test
     @Order(1)
-    @DisplayName("회원 정보 목록 조회 test")
+    @DisplayName("회원 정보 목록 조회")
     void getMembers() {
         testEntityManager.persist(member1);
         testEntityManager.persist(member2);
@@ -60,7 +60,7 @@ class MemberRepositoryTest {
 
     @Test
     @Order(2)
-    @DisplayName("회원 정보 단건 조회 test")
+    @DisplayName("회원 정보 단건 조회")
     void getMemberByMemberId() {
         testEntityManager.persist(member1);
 
