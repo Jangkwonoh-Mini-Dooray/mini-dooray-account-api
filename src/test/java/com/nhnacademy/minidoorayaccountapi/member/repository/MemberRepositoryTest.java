@@ -11,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 @DataJpaTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.AUTO_CONFIGURED)
@@ -22,21 +21,27 @@ class MemberRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
 
+    private Member member1;
+    private Member member2;
+
+    @BeforeEach
+    void setUp() {
+
+        member1 = new Member();
+        member1.setMemberId("member1-id");
+        member1.setEmail("member1-email");
+        member1.setName("member1-name");
+
+        member2 = new Member();
+        member2.setMemberId("member2-id");
+        member2.setEmail("member2-email");
+        member2.setName("member2-name");
+    }
+
     @Test
     @Order(1)
     @DisplayName("회원 정보 목록 조회 test")
     void getMembers() {
-        Member member1 = new Member();
-        Member member2 = new Member();
-
-        member1.setMemberId("id1");
-        member1.setEmail("email1");
-        member1.setName("name1");
-
-        member2.setMemberId("id2");
-        member2.setEmail("email1");
-        member2.setName("name2");
-
         testEntityManager.persist(member1);
         testEntityManager.persist(member2);
 
@@ -57,18 +62,12 @@ class MemberRepositoryTest {
     @Order(2)
     @DisplayName("회원 정보 단건 조회 test")
     void getMemberByMemberId() {
-        Member member = new Member();
+        testEntityManager.persist(member1);
 
-        member.setMemberId("id");
-        member.setEmail("email");
-        member.setName("name");
+        GetMemberDto getMemberDto = memberRepository.getMember(member1.getMemberId());
 
-        testEntityManager.persist(member);
-
-        GetMemberDto getMemberDto = memberRepository.getMember(member.getMemberId());
-
-        assertThat(getMemberDto.getMemberId()).isEqualTo(member.getMemberId());
-        assertThat(getMemberDto.getEmail()).isEqualTo(member.getEmail());
-        assertThat(getMemberDto.getName()).isEqualTo(member.getName());
+        assertThat(getMemberDto.getMemberId()).isEqualTo(member1.getMemberId());
+        assertThat(getMemberDto.getEmail()).isEqualTo(member1.getEmail());
+        assertThat(getMemberDto.getName()).isEqualTo(member1.getName());
     }
 }
