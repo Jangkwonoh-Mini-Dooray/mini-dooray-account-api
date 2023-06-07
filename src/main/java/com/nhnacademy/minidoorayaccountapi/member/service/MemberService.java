@@ -1,16 +1,18 @@
 package com.nhnacademy.minidoorayaccountapi.member.service;
 
+import com.nhnacademy.minidoorayaccountapi.member.dto.GetMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.MemberDto;
-import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
 
 import java.util.List;
 
 public interface MemberService {
-    List<MemberDto> getMembers();
+    List<GetMemberDto> getMembers();
 
-    List<MemberDto> getMember(Long memberId);
-//
-//    Member createMember(Member member);
-//
-//    String deleteMember(String memberId);
+    GetMemberDto getMember(String memberId);
+
+    void createMember(MemberDto memberDto);
+
+    void updateMember(String memberId, MemberDto memberDto);
+
+    void deleteMember(String memberId);
 }
