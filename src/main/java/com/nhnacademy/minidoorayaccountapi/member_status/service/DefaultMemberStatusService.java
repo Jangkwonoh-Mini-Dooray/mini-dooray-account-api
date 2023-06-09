@@ -1,6 +1,9 @@
 package com.nhnacademy.minidoorayaccountapi.member_status.service;
 
-import com.nhnacademy.minidoorayaccountapi.exception.NotFoundStatusException;
+import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberAuthorityException;
+import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberStatusException;
+import com.nhnacademy.minidoorayaccountapi.member_authority.dto.MemberAuthorityDto;
+import com.nhnacademy.minidoorayaccountapi.member_authority.entity.MemberAuthority;
 import com.nhnacademy.minidoorayaccountapi.member_status.dto.MemberStatusDto;
 import com.nhnacademy.minidoorayaccountapi.member_status.entity.MemberStatus;
 import com.nhnacademy.minidoorayaccountapi.member_status.repository.MemberStatusRepository;
@@ -11,16 +14,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DefaultMemberStatusService implements MemberStatusService{
     private final MemberStatusRepository memberStatusRepository;
-    @Override
-    public MemberStatusDto getMemberStatus(int memberStatusId) {
-        return memberStatusRepository.getMemberStatus(memberStatusId);
-    }
 
     @Override
     public void updateMemberStatus(int memberStatusId, MemberStatusDto memberStatusDto) {
         MemberStatus memberStatus = memberStatusRepository.findById(memberStatusId)
-                .orElseThrow(() -> new NotFoundStatusException(memberStatusId));
+                .orElseThrow(() -> new NotFoundMemberStatusException(memberStatusId));
         memberStatus.setStatus(memberStatusDto.getStatus());
-        memberStatusRepository.save(memberStatus);
+        memberStatusRepository.saveAndFlush(memberStatus);
     }
 }

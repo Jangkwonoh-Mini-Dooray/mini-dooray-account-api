@@ -1,7 +1,9 @@
 package com.nhnacademy.minidoorayaccountapi.advice;
 
 import com.nhnacademy.minidoorayaccountapi.exception.DuplicateMemberIdException;
+import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberAuthorityException;
 import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberException;
+import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberStatusException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -31,7 +33,25 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(NotFoundMemberException.class)
-    public ResponseEntity<Object> handleDepartmentNotFoundException(NotFoundMemberException ex) {
+    public ResponseEntity<Object> handleNotFoundMemberException(NotFoundMemberException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("title", ex.getMessage());
+        body.put("status", HttpStatus.NOT_FOUND.value());
+        body.put("timestamp", LocalDateTime.now());
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NotFoundMemberStatusException.class)
+    public ResponseEntity<Object> handleNotFoundMemberStatusException(NotFoundMemberStatusException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("title", ex.getMessage());
+        body.put("status", HttpStatus.NOT_FOUND.value());
+        body.put("timestamp", LocalDateTime.now());
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NotFoundMemberAuthorityException.class)
+    public ResponseEntity<Object> handleNotFoundAuthorityException(NotFoundMemberAuthorityException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("title", ex.getMessage());
         body.put("status", HttpStatus.NOT_FOUND.value());

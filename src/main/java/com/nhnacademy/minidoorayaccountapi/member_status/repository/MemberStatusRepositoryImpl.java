@@ -11,15 +11,4 @@ public class MemberStatusRepositoryImpl extends QuerydslRepositorySupport implem
     public MemberStatusRepositoryImpl() {
         super(MemberStatus.class);
     }
-
-    @Override
-    public MemberStatusDto getMemberStatus(int memberStatusId) {
-        QMemberStatus qMemberStatus = QMemberStatus.memberStatus;
-
-        return from(qMemberStatus)
-                .where(qMemberStatus.memberStatusId.eq(memberStatusId))
-                .select(Projections.bean(MemberStatusDto.class,
-                        qMemberStatus.status))
-                .fetchOne();
-    }
 }

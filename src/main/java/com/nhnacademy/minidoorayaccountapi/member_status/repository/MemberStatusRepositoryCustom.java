@@ -5,5 +5,4 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
 public interface MemberStatusRepositoryCustom {
-    MemberStatusDto getMemberStatus(int memberStatusId);
 }
