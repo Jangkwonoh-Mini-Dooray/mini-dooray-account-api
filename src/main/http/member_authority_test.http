@@ -1,0 +1,28 @@
+### 회원 권한 조회1
+GET /members/naht94/authority
+Host: localhost:8080
+
+
+### 회원 권한 조회2
+GET /members/suebin/authority
+Host: localhost:8080
+
+
+### 회원 권한 수정1
+PUT /members/naht94/authority
+Host: localhost:8080
+Content-Type: application/json
+
+{
+  "status" : "Admin"
+}
+
+
+### 회원 권한 수정2
+PUT /members/suebin/authority
+Host: localhost:8080
+Content-Type: application/json
+
+{
+  "status" : "Admin"
+}
