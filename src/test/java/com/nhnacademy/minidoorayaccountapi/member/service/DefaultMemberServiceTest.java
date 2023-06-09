@@ -1,8 +1,6 @@
 package com.nhnacademy.minidoorayaccountapi.member.service;
 
-import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberAuthorityException;
-import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberException;
-import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberStatusException;
+import com.nhnacademy.minidoorayaccountapi.exception.*;
 import com.nhnacademy.minidoorayaccountapi.member.dto.GetMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.MemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.PutMemberDto;
@@ -19,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 
 import java.util.List;
 import java.util.Optional;
@@ -149,7 +148,7 @@ class DefaultMemberServiceTest {
     @Test
     @Order(4)
     @DisplayName("회원 정보 생성 실패 (default status 존재하지 않음)")
-    void createMemberNonExistingStatus() {
+    void createMemberFailDueToNonExistingStatus() {
         given(memberStatusRepository.findById(defaultStatus.getMemberStatusId()))
                 .willReturn(Optional.empty());
 
@@ -161,13 +160,26 @@ class DefaultMemberServiceTest {
     @Test
     @Order(5)
     @DisplayName("회원 정보 생성 실패 (default authority 존재하지 않음)")
-    void createMemberNonExistingAuthority() {
+    void createMemberFailDueToNonExistingAuthority() {
         given(memberAuthorityRepository.findById(defaultAuthority.getMemberAuthorityId()))
                 .willReturn(Optional.empty());
 
         assertThatThrownBy(() -> memberService.createMember(memberDto))
                 .isInstanceOf(NotFoundMemberAuthorityException.class)
                 .hasMessageContaining(String.valueOf(defaultAuthority.getMemberAuthorityId()));
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("회원 정보 생성 실패 (Member ID 중복)")
+    void createMemberFailDueToDuplicateMemberIdException() {
+        // Given
+        given(memberRepository.existsById(anyString())).willReturn(true);
+
+        // When & Then
+        assertThatThrownBy(() -> memberService.createMember(memberDto))
+                .isInstanceOf(DuplicateMemberIdException.class)
+                .hasMessageContaining("Member ID 중복");
     }
 
     @Test

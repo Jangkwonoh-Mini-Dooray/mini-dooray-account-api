@@ -1,6 +1,6 @@
 package com.nhnacademy.minidoorayaccountapi.member.controller;
 
-import com.nhnacademy.minidoorayaccountapi.exception.MemberBindingResultException;
+import com.nhnacademy.minidoorayaccountapi.exception.ValidationFailedException;
 import com.nhnacademy.minidoorayaccountapi.member.dto.GetMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.MemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.MemberIdDto;
@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -33,10 +34,10 @@ public class MemberController {
     }
 
     @PostMapping
-    public ResponseEntity<MemberIdDto> createMember(@RequestBody MemberDto postMemberDto,
+    public ResponseEntity<MemberIdDto> createMember(@Valid @RequestBody MemberDto postMemberDto,
                                                     BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw new MemberBindingResultException(bindingResult.getAllErrors().get(0).getDefaultMessage());
+            throw new ValidationFailedException(bindingResult);
         }
 
         Member member = memberService.createMember(postMemberDto);
@@ -44,11 +45,12 @@ public class MemberController {
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
+
     @PutMapping("/{memberId}")
-    public ResponseEntity<MemberIdDto> updateMember(@PathVariable String memberId, @RequestBody PutMemberDto putMemberDto,
+    public ResponseEntity<MemberIdDto> updateMember(@PathVariable String memberId, @Valid @RequestBody PutMemberDto putMemberDto,
                                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw new MemberBindingResultException(bindingResult.getAllErrors().get(0).getDefaultMessage());
+            throw new ValidationFailedException(bindingResult);
         }
         Member member = memberService.updateMember(memberId, putMemberDto);
         MemberIdDto responseDto = new MemberIdDto(member.getMemberId());
