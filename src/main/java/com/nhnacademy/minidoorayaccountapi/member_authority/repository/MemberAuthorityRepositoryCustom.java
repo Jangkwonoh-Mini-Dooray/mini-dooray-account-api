@@ -5,5 +5,4 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
 public interface MemberAuthorityRepositoryCustom {
-    MemberAuthorityDto getMemberAuthority(int authorityId);
 }

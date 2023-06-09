@@ -11,17 +11,4 @@ public class MemberAuthorityRepositoryImpl extends QuerydslRepositorySupport imp
     public MemberAuthorityRepositoryImpl() {
         super(MemberAuthority.class);
     }
-
-    @Override
-    public MemberAuthorityDto getMemberAuthority(int memberAuthorityId) {
-        QMember qMember = QMember.member;
-    QMemberAuthority qMemberAuthority = QMemberAuthority.memberAuthority;
-
-        return from(qMemberAuthority)
-                .innerJoin(qMember.memberAuthority, qMemberAuthority)
-                .where(qMember.memberAuthority.memberAuthorityId.eq(memberAuthorityId))
-                .select(Projections.bean(MemberAuthorityDto.class,
-                        qMemberAuthority.status))
-                .fetchOne();
-    }
 }

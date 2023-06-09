@@ -11,10 +11,10 @@
 * Response
 
   ```
-  HTTP/1.1 201
-  Content-Type: application/json
+  HTTP/1.1 200 
+  Content-Type: application/json;charset=UTF-8
   Transfer-Encoding: chunked
-  Date: Tue, 16 May 2023 05:57:35 GMT
+  Date: Fri, 09 Jun 2023 05:57:54 GMT
   Keep-Alive: timeout=60
   Connection: keep-alive
 
@@ -43,10 +43,10 @@
 * Response
 
   ```
-  HTTP/1.1 200
-  Content-Type: application/json
+  HTTP/1.1 200 
+  Content-Type: application/json;charset=UTF-8
   Transfer-Encoding: chunked
-  Date: Tue, 16 May 2023 05:58:55 GMT
+  Date: Fri, 09 Jun 2023 05:57:30 GMT
   Keep-Alive: timeout=60
   Connection: keep-alive
 
@@ -76,15 +76,15 @@
 * Response
 
   ```
-  HTTP/1.1 201
-  Content-Type: application/json
+  HTTP/1.1 201 
+  Content-Type: application/json;charset=UTF-8
   Transfer-Encoding: chunked
-  Date: Tue, 16 May 2023 05:57:35 GMT
+  Date: Fri, 09 Jun 2023 05:55:53 GMT
   Keep-Alive: timeout=60
   Connection: keep-alive
 
   {
-    "id": "naht94"
+    "memberId": "naht94"
   }
   ```
   
@@ -106,15 +106,15 @@
 * Response
 
   ```
-  HTTP/1.1 201
-  Content-Type: application/json
+  HTTP/1.1 200 
+  Content-Type: application/json;charset=UTF-8
   Transfer-Encoding: chunked
-  Date: Tue, 16 May 2023 05:57:35 GMT
+  Date: Fri, 09 Jun 2023 05:58:41 GMT
   Keep-Alive: timeout=60
   Connection: keep-alive
 
   {
-    "id": "naht94"
+    "memberId": "naht94"
   }
   ```
 
@@ -129,8 +129,8 @@
 * Response
 
   ```
-  HTTP/1.1 204
-  Date: Tue, 16 May 2023 06:00:45 GMT
+  HTTP/1.1 204 
+  Date: Fri, 09 Jun 2023 05:56:55 GMT
   Keep-Alive: timeout=60
   Connection: keep-alive
 
