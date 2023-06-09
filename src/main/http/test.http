@@ -1,0 +1,29 @@
+### 회원 정보 생성
+POST /members
+Host: localhost:8080
+Content-Type: application/json
+
+{
+    "memberId" : "naht94",
+    "password" : "1111",
+    "email" : "naht94@hanmail.net",
+    "name" : "권형택"
+ }
+
+
+### 회원 정보 목록 조회
+GET /members
+Host: localhost:8080
+Content-Type: application/json
+
+
+### 프로젝트 삭제
+
+DELETE /projects/11
+Host: localhost:8080
+
+### 프로젝트 멤버 조회
+
+GET /projects/10/members
+Host: localhost:8080
+Content-Type: application/json
