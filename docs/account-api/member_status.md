@@ -1,4 +1,4 @@
-# /member_authority
+# /member_stauts
 
 ## 회원 상태 정보 조희
 

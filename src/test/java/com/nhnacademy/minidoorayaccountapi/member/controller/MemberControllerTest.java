@@ -1,18 +1,27 @@
 package com.nhnacademy.minidoorayaccountapi.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nhnacademy.minidoorayaccountapi.exception.MemberBindingResultException;
 import com.nhnacademy.minidoorayaccountapi.member.dto.GetMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.MemberDto;
+import com.nhnacademy.minidoorayaccountapi.member.dto.PutMemberDto;
+import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
 import com.nhnacademy.minidoorayaccountapi.member.service.MemberService;
+import com.nhnacademy.minidoorayaccountapi.member_authority.entity.MemberAuthority;
+import com.nhnacademy.minidoorayaccountapi.member_status.entity.MemberStatus;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.Arrays;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -32,11 +41,15 @@ class MemberControllerTest {
 
     private GetMemberDto member1Dto;
     private GetMemberDto member2Dto;
+    private MemberStatus defaultStatus;
+    private MemberAuthority defaultAuthority;
 
     @BeforeEach
     void setUp() {
         member1Dto = new GetMemberDto("member1-id", "member1-email", "member1-name");
         member2Dto = new GetMemberDto("member2-id", "member2-email", "member2-name");
+        defaultStatus = new MemberStatus(1, "가입");
+        defaultAuthority = new MemberAuthority(2, "MEMBER");
     }
 
     @Test
@@ -65,31 +78,63 @@ class MemberControllerTest {
     @Order(3)
     @DisplayName("회원 정보 생성")
     void createMember() throws Exception {
-        MemberDto memberDto = new MemberDto("member3-id", "member3-email", "password", "member3-name");
+        MemberDto memberDto = new MemberDto("member3-id", "member3-email", "member3-password", "member3-name");
+        Member mockMember = new Member();
+        mockMember.setMemberId(memberDto.getMemberId());
+        mockMember.setMemberStatus(defaultStatus);
+        mockMember.setMemberAuthority(defaultAuthority);
+        mockMember.setPassword(memberDto.getPassword());
+        mockMember.setEmail(memberDto.getEmail());
+        mockMember.setName(memberDto.getName());
+
+        given(memberService.createMember(any(MemberDto.class))).willReturn(mockMember);
 
         mockMvc.perform(post("/members")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(memberDto)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
+//    @Test
+//    @Order(4)
+//    @DisplayName("회원 정보 생성 실패 - BindingResult 오류")
+//    void createMemberFailDueToBindingResultError() throws Exception {
+//        MemberDto memberDto = new MemberDto("", "", "not_an_email", "");
+//
+//        mockMvc.perform(post("/members")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(memberDto)))
+//                .andExpect(status().isBadRequest())
+//                .andExpect(result -> {
+//                    assertThat(result.getResolvedException()).isInstanceOfAny(MemberBindingResultException.class);
+//                });
+//    }
+
     @Test
-    @Order(4)
+    @Order(5)
     @DisplayName("회원 정보 수정")
     void updateMember() throws Exception {
-        MemberDto memberDto = new MemberDto("member1-id", "updated-email", "updated-password", "updated-name");
+        PutMemberDto memberDto = new PutMemberDto("updated-password", "updated-email", "updated-name");
 
-        mockMvc.perform(put("/members/member1-id")
+        Member mockMember = new Member();
+        mockMember.setMemberId("member-id");
+        mockMember.setPassword(memberDto.getPassword());
+        mockMember.setEmail(memberDto.getEmail());
+        mockMember.setName(memberDto.getName());
+
+        given(memberService.updateMember(anyString(), any(PutMemberDto.class))).willReturn(mockMember);
+
+        mockMvc.perform(put("/members/member-id")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(memberDto)))
                 .andExpect(status().isOk());
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     @DisplayName("회원 정보 삭제")
     void deleteMember() throws Exception {
         mockMvc.perform(delete("/members/member1-id"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 }

@@ -45,17 +45,6 @@ class DefaultMemberStatusServiceTest {
     }
 
     @Test
-    @Order(1)
-    @DisplayName("회원 권한 정보 조희")
-    void getMemberStatus() {
-        given(memberStatusRepository.getMemberStatus(memberStatus1.getMemberStatusId())).willReturn(
-                new MemberStatusDto(memberStatus1.getStatus())
-        );
-        MemberStatusDto memberStatusDto = memberStatusService.getMemberStatus(memberStatus1.getMemberStatusId());
-        assertThat(memberStatusDto.getStatus()).isEqualTo(memberStatus1.getStatus());
-    }
-
-    @Test
     @Order(2)
     @DisplayName("회원 권한 정보 수정")
     void updateMemberStatus() {

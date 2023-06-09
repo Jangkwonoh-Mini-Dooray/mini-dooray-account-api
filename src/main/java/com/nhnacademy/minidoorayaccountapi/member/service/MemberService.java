@@ -2,6 +2,7 @@ package com.nhnacademy.minidoorayaccountapi.member.service;
 
 import com.nhnacademy.minidoorayaccountapi.member.dto.GetMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.MemberDto;
+import com.nhnacademy.minidoorayaccountapi.member.dto.PutMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface MemberService {
 
     Member createMember(MemberDto memberDto);
 
-    Member updateMember(String memberId, MemberDto memberDto);
+    Member updateMember(String memberId, PutMemberDto memberDto);
 
     void deleteMember(String memberId);
 }

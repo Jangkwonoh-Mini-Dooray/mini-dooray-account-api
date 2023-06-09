@@ -5,6 +5,7 @@ import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberException;
 import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberStatusException;
 import com.nhnacademy.minidoorayaccountapi.member.dto.GetMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.MemberDto;
+import com.nhnacademy.minidoorayaccountapi.member.dto.PutMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
 import com.nhnacademy.minidoorayaccountapi.member.repository.MemberRepository;
 import com.nhnacademy.minidoorayaccountapi.member_authority.entity.MemberAuthority;
@@ -45,6 +46,7 @@ class DefaultMemberServiceTest {
     private Member member1;
     private Member member2;
     private MemberDto memberDto;
+    private PutMemberDto putMemberDto;
     private MemberStatus defaultStatus;
     private MemberAuthority defaultAuthority;
 
@@ -64,6 +66,12 @@ class DefaultMemberServiceTest {
 
         memberDto = new MemberDto(
                 "Dto-id",
+                "Dto-password",
+                "Dto-email",
+                "Dto-name"
+        );
+
+        putMemberDto = new PutMemberDto(
                 "Dto-password",
                 "Dto-email",
                 "Dto-name"
@@ -125,7 +133,7 @@ class DefaultMemberServiceTest {
         memberService.createMember(memberDto);
 
         ArgumentCaptor<Member> captor = ArgumentCaptor.forClass(Member.class);
-        verify(memberRepository).save(captor.capture());
+        verify(memberRepository).saveAndFlush(captor.capture());
 
         Member savedMember = captor.getValue();
 
@@ -172,10 +180,10 @@ class DefaultMemberServiceTest {
                 Optional.of(beforeUpdateMember)
         );
 
-        memberService.updateMember(beforeUpdateMember.getMemberId(), memberDto);
+        memberService.updateMember(beforeUpdateMember.getMemberId(), putMemberDto);
 
         ArgumentCaptor<Member> captor = ArgumentCaptor.forClass(Member.class);
-        verify(memberRepository).save(captor.capture());
+        verify(memberRepository).saveAndFlush(captor.capture());
 
         Member afterUpdateMember = captor.getValue();
 
@@ -193,7 +201,7 @@ class DefaultMemberServiceTest {
         given(memberRepository.existsById(nonExistentMemberId)).willReturn(false);
 
         assertThatThrownBy(
-                () -> memberService.updateMember(nonExistentMemberId, memberDto))
+                () -> memberService.updateMember(nonExistentMemberId, putMemberDto))
                 .isInstanceOf(NotFoundMemberException.class)
                 .hasMessageContaining(nonExistentMemberId);
     }

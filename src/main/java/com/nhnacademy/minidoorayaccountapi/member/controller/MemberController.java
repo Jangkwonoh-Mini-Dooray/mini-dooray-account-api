@@ -4,6 +4,7 @@ import com.nhnacademy.minidoorayaccountapi.exception.MemberBindingResultExceptio
 import com.nhnacademy.minidoorayaccountapi.member.dto.GetMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.MemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.MemberIdDto;
+import com.nhnacademy.minidoorayaccountapi.member.dto.PutMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
 import com.nhnacademy.minidoorayaccountapi.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -37,13 +38,14 @@ public class MemberController {
         if (bindingResult.hasErrors()) {
             throw new MemberBindingResultException(bindingResult.getAllErrors().get(0).getDefaultMessage());
         }
+
         Member member = memberService.createMember(postMemberDto);
         MemberIdDto responseDto = new MemberIdDto(member.getMemberId());
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/{memberId}")
-    public ResponseEntity<MemberIdDto> updateMember(@PathVariable String memberId, @RequestBody MemberDto putMemberDto,
+    public ResponseEntity<MemberIdDto> updateMember(@PathVariable String memberId, @RequestBody PutMemberDto putMemberDto,
                                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new MemberBindingResultException(bindingResult.getAllErrors().get(0).getDefaultMessage());
