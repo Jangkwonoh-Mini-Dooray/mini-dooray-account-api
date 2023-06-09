@@ -13,7 +13,7 @@ public interface MemberService {
 
     Member createMember(MemberDto memberDto);
 
-    void updateMember(String memberId, MemberDto memberDto);
+    Member updateMember(String memberId, MemberDto memberDto);
 
     void deleteMember(String memberId);
 }
