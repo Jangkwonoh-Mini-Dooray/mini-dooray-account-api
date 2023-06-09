@@ -1,5 +1,6 @@
 package com.nhnacademy.minidoorayaccountapi.member.service;
 
+import com.nhnacademy.minidoorayaccountapi.exception.DuplicateMemberIdException;
 import com.nhnacademy.minidoorayaccountapi.exception.NotFoundAuthorityException;
 import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberException;
 import com.nhnacademy.minidoorayaccountapi.exception.NotFoundStatusException;
@@ -41,25 +42,27 @@ public class DefaultMemberService implements MemberService {
 
     @Override
     @Transactional
-    public void createMember(MemberDto memberDto) {
+    public Member createMember(MemberDto memberDto) {
+        if(memberRepository.existsById(memberDto.getMemberId())) {
+            throw new DuplicateMemberIdException("멤버 아이디 중복 : " + memberDto.getMemberId());
+        }
+
         Member member = new Member();
         member.setMemberId(memberDto.getMemberId());
         member.setPassword(memberDto.getPassword());
         member.setEmail(memberDto.getEmail());
         member.setName(memberDto.getName());
-
 //        `member_status_id`        INT DEFAULT 1,
 //        `authority_id`     INT DEFAULT 2,
         MemberStatus defaultStatus = memberStatusRepository.findById(1)
                 .orElseThrow(() -> new NotFoundStatusException(1));
         MemberAuthority defaultAuthority = memberAuthorityRepository.findById(2)
                 .orElseThrow(() -> new NotFoundAuthorityException(2));
-
         member.setMemberStatus(defaultStatus);
         member.setMemberAuthority(defaultAuthority);
-        memberRepository.save(member);
-    }
 
+        return memberRepository.saveAndFlush(member);
+    }
 
     @Override
     @Transactional

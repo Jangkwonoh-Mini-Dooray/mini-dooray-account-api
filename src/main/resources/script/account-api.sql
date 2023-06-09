@@ -13,10 +13,10 @@ CREATE TABLE `member_status`
 
 CREATE TABLE `member_authority`
 (
-    `authority_id` INT AUTO_INCREMENT,
+    `member_authority_id` INT AUTO_INCREMENT,
     `status`       VARCHAR(20) NOT NULL,
     primary key (
-                 `authority_id`
+                 `member_authority_id`
         )
 );
 
@@ -24,14 +24,14 @@ CREATE TABLE `member`
 (
     `member_id`        VARCHAR(30) primary key,
     `member_status_id` INT DEFAULT 1,
-    `authority_id`     INT DEFAULT 2,
+    `member_authority_id`     INT DEFAULT 2,
     `password`         VARCHAR(300) NOT NULL,
     `email`            VARCHAR(30)  NOT NULL,
     `name`             VARCHAR(20)  NOT NULL,
 	CONSTRAINT `FK_member_status_TO_member_1`
     FOREIGN KEY (`member_status_id`) REFERENCES `member_status` (`member_status_id`),
     CONSTRAINT `FK_member_authority_TO_member_1`
-    FOREIGN KEY (`authority_id`) REFERENCES `member_authority` (`authority_id`)
+    FOREIGN KEY (`member_authority_id`) REFERENCES `member_authority` (`member_authority_id`)
 );
 
 -- member_status 테이블 데이터 추가
