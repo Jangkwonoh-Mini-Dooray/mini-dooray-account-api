@@ -1,7 +1,7 @@
 package com.nhnacademy.minidoorayaccountapi.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nhnacademy.minidoorayaccountapi.exception.MemberBindingResultException;
+import com.nhnacademy.minidoorayaccountapi.exception.ValidationFailedException;
 import com.nhnacademy.minidoorayaccountapi.member.dto.GetMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.MemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.PutMemberDto;
@@ -15,9 +15,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.Arrays;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -78,7 +78,7 @@ class MemberControllerTest {
     @Order(3)
     @DisplayName("회원 정보 생성")
     void createMember() throws Exception {
-        MemberDto memberDto = new MemberDto("member3-id", "member3-email", "member3-password", "member3-name");
+        MemberDto memberDto = new MemberDto("member3-id", "member3-password", "member3@emil.com", "member3-name");
         Member mockMember = new Member();
         mockMember.setMemberId(memberDto.getMemberId());
         mockMember.setMemberStatus(defaultStatus);
@@ -95,26 +95,26 @@ class MemberControllerTest {
                 .andExpect(status().isCreated());
     }
 
-//    @Test
-//    @Order(4)
-//    @DisplayName("회원 정보 생성 실패 - BindingResult 오류")
-//    void createMemberFailDueToBindingResultError() throws Exception {
-//        MemberDto memberDto = new MemberDto("", "", "not_an_email", "");
-//
-//        mockMvc.perform(post("/members")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(memberDto)))
-//                .andExpect(status().isBadRequest())
-//                .andExpect(result -> {
-//                    assertThat(result.getResolvedException()).isInstanceOfAny(MemberBindingResultException.class);
-//                });
-//    }
+    @Test
+    @Order(4)
+    @DisplayName("회원 정보 생성 실패 - BindingResult 오류")
+    void createMemberFailDueToBindingResultError() throws Exception {
+        MemberDto memberDto = new MemberDto("", "", "not_an_email", "");
+
+        mockMvc.perform(post("/members")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(memberDto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> {
+                    assertThat(result.getResolvedException()).isInstanceOfAny(ValidationFailedException.class);
+                });
+    }
 
     @Test
     @Order(5)
     @DisplayName("회원 정보 수정")
     void updateMember() throws Exception {
-        PutMemberDto memberDto = new PutMemberDto("updated-password", "updated-email", "updated-name");
+        PutMemberDto memberDto = new PutMemberDto("updated-password", "updated@email.com", "updated-name");
 
         Member mockMember = new Member();
         mockMember.setMemberId("member-id");
@@ -132,6 +132,27 @@ class MemberControllerTest {
 
     @Test
     @Order(6)
+    @DisplayName("회원 정보 수정 실패 - BindingResult 오류")
+    void updateMemberFailDueToBindingResultError() throws Exception {
+        PutMemberDto memberDto = new PutMemberDto("", "not_an_email", "   ");
+
+        Member mockMember = new Member();
+        mockMember.setMemberId("member-id");
+        mockMember.setPassword(memberDto.getPassword());
+        mockMember.setEmail(memberDto.getEmail());
+        mockMember.setName(memberDto.getName());
+
+        mockMvc.perform(post("/members")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(memberDto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> {
+                    assertThat(result.getResolvedException()).isInstanceOfAny(ValidationFailedException.class);
+                });
+    }
+
+    @Test
+    @Order(7)
     @DisplayName("회원 정보 삭제")
     void deleteMember() throws Exception {
         mockMvc.perform(delete("/members/member1-id"))
