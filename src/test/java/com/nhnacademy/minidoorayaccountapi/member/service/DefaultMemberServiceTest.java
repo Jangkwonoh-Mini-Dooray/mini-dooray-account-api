@@ -1,8 +1,8 @@
 package com.nhnacademy.minidoorayaccountapi.member.service;
 
-import com.nhnacademy.minidoorayaccountapi.exception.NotFoundAuthorityException;
+import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberAuthorityException;
 import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberException;
-import com.nhnacademy.minidoorayaccountapi.exception.NotFoundStatusException;
+import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberStatusException;
 import com.nhnacademy.minidoorayaccountapi.member.dto.GetMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.MemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
@@ -146,7 +146,7 @@ class DefaultMemberServiceTest {
                 .willReturn(Optional.empty());
 
         assertThatThrownBy(() -> memberService.createMember(memberDto))
-                .isInstanceOf(NotFoundStatusException.class)
+                .isInstanceOf(NotFoundMemberStatusException.class)
                 .hasMessageContaining(String.valueOf(defaultStatus.getMemberStatusId()));
     }
 
@@ -158,7 +158,7 @@ class DefaultMemberServiceTest {
                 .willReturn(Optional.empty());
 
         assertThatThrownBy(() -> memberService.createMember(memberDto))
-                .isInstanceOf(NotFoundAuthorityException.class)
+                .isInstanceOf(NotFoundMemberAuthorityException.class)
                 .hasMessageContaining(String.valueOf(defaultAuthority.getMemberAuthorityId()));
     }
 

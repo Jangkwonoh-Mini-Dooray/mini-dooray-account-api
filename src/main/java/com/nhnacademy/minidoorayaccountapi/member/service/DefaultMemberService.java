@@ -1,9 +1,9 @@
 package com.nhnacademy.minidoorayaccountapi.member.service;
 
 import com.nhnacademy.minidoorayaccountapi.exception.DuplicateMemberIdException;
-import com.nhnacademy.minidoorayaccountapi.exception.NotFoundAuthorityException;
+import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberAuthorityException;
 import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberException;
-import com.nhnacademy.minidoorayaccountapi.exception.NotFoundStatusException;
+import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberStatusException;
 import com.nhnacademy.minidoorayaccountapi.member.dto.GetMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.MemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
@@ -55,9 +55,9 @@ public class DefaultMemberService implements MemberService {
 //        `member_status_id`        INT DEFAULT 1,
 //        `authority_id`     INT DEFAULT 2,
         MemberStatus defaultStatus = memberStatusRepository.findById(1)
-                .orElseThrow(() -> new NotFoundStatusException(1));
+                .orElseThrow(() -> new NotFoundMemberStatusException(1));
         MemberAuthority defaultAuthority = memberAuthorityRepository.findById(2)
-                .orElseThrow(() -> new NotFoundAuthorityException(2));
+                .orElseThrow(() -> new NotFoundMemberAuthorityException(2));
         member.setMemberStatus(defaultStatus);
         member.setMemberAuthority(defaultAuthority);
 
