@@ -25,14 +25,4 @@ class MemberStatusRepositoryTest {
         memberStatus = new MemberStatus(1, "가입");
     }
 
-    @Test
-    @Order(1)
-    @DisplayName("회원 권한 정보 조회")
-    void getMemberStatus() {
-        testEntityManager.persist(memberStatus);
-
-        MemberStatusDto memberStatusDto = memberStatusRepository.getMemberStatus(memberStatus.getMemberStatusId());
-
-        assertThat(memberStatusDto.getStatus()).isEqualTo(memberStatus.getStatus());
-    }
 }

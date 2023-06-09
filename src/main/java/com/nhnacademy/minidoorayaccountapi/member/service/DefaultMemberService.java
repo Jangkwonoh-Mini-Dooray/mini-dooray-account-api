@@ -6,6 +6,7 @@ import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberException;
 import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberStatusException;
 import com.nhnacademy.minidoorayaccountapi.member.dto.GetMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.MemberDto;
+import com.nhnacademy.minidoorayaccountapi.member.dto.PutMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
 import com.nhnacademy.minidoorayaccountapi.member.repository.MemberRepository;
 import com.nhnacademy.minidoorayaccountapi.member_authority.entity.MemberAuthority;
@@ -43,8 +44,8 @@ public class DefaultMemberService implements MemberService {
     @Override
     @Transactional
     public Member createMember(MemberDto memberDto) {
-        if(memberRepository.existsById(memberDto.getMemberId())) {
-            throw new DuplicateMemberIdException("멤버 아이디 중복 : " + memberDto.getMemberId());
+        if (memberRepository.existsById(memberDto.getMemberId())) {
+            throw new DuplicateMemberIdException("Member ID 중복 : " + memberDto.getMemberId());
         }
 
         Member member = new Member();
@@ -66,7 +67,7 @@ public class DefaultMemberService implements MemberService {
 
     @Override
     @Transactional
-    public Member updateMember(String memberId, MemberDto memberDto) {
+    public Member updateMember(String memberId, PutMemberDto memberDto) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundMemberException(memberId));
         member.setPassword(memberDto.getPassword());
