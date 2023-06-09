@@ -28,7 +28,7 @@ public class MemberController {
 
     @GetMapping("/{memberId}")
     public ResponseEntity<GetMemberDto> getMember(@PathVariable String memberId) {
-        return ResponseEntity.ok().body(memberService.getMember(memberId));
+        return new ResponseEntity<>(memberService.getMember(memberId), HttpStatus.OK);
     }
 
     @PostMapping
@@ -43,15 +43,20 @@ public class MemberController {
     }
 
     @PutMapping("/{memberId}")
-    public ResponseEntity<Void> updateMember(@PathVariable String memberId, @RequestBody MemberDto putMemberDto) {
-        memberService.updateMember(memberId, putMemberDto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<MemberIdDto> updateMember(@PathVariable String memberId, @RequestBody MemberDto putMemberDto,
+                                             BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new MemberBindingResultException(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
+        Member member = memberService.updateMember(memberId, putMemberDto);
+        MemberIdDto responseDto = new MemberIdDto(member.getMemberId());
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{memberId}")
     public ResponseEntity<Void> deleteMember(@PathVariable String memberId) {
         memberService.deleteMember(memberId);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

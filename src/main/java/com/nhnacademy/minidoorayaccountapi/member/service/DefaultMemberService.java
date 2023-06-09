@@ -66,15 +66,14 @@ public class DefaultMemberService implements MemberService {
 
     @Override
     @Transactional
-    public void updateMember(String memberId, MemberDto memberDto) {
+    public Member updateMember(String memberId, MemberDto memberDto) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundMemberException(memberId));
         member.setPassword(memberDto.getPassword());
         member.setEmail(memberDto.getEmail());
         member.setName(memberDto.getName());
-        memberRepository.save(member);
+        return memberRepository.saveAndFlush(member);
     }
-    
 
     @Override
     @Transactional
