@@ -5,13 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberAuthorityDto {
-    @NotBlank
-    private String status;
+public class MemberAuthorityIdDto {
+    @NotNull
+    @Positive
+    private int memberAuthorityId;
 }
