@@ -55,7 +55,7 @@ class DefaultMemberAuthorityServiceTest {
 
     @Test
     @Order(1)
-    @DisplayName("회원 권한 수정")
+    @DisplayName("회원 권한 정보 수정")
     void updateMemberAuthority() {
         given(memberRepository.findById(member.getMemberId())).willReturn(
                 Optional.ofNullable(member)
@@ -69,7 +69,7 @@ class DefaultMemberAuthorityServiceTest {
 
     @Test
     @Order(2)
-    @DisplayName("회원 권한 수정 살패 - NotFoundMember")
+    @DisplayName("회원 권한 정보 수정 살패 - NotFoundMember")
     void updateMemberAuthorityFailDueToNotFoundMemberError() {
         given(memberRepository.findById(member.getMemberId())).willReturn(
                 Optional.empty()
@@ -85,7 +85,7 @@ class DefaultMemberAuthorityServiceTest {
 
     @Test
     @Order(3)
-    @DisplayName("회원 권한 수정 실패 - NotFoundAuthority")
+    @DisplayName("회원 권한 정보 수정 실패 - NotFoundAuthority")
     void updateMemberAuthorityFailDueToNotFoundAuthorityError() {
         given(memberRepository.findById(member.getMemberId())).willReturn(
                 Optional.ofNullable(member)
