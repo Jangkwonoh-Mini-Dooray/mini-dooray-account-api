@@ -1,5 +1,7 @@
 package com.nhnacademy.minidoorayaccountapi.member_authority.service;
 
+import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberAuthorityException;
+import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberException;
 import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
 import com.nhnacademy.minidoorayaccountapi.member.repository.MemberRepository;
 import com.nhnacademy.minidoorayaccountapi.member_authority.dto.MemberAuthorityIdDto;
@@ -17,6 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -35,6 +38,7 @@ class DefaultMemberAuthorityServiceTest {
     private MemberAuthority memberAuthority1;
     private MemberAuthority memberAuthority2;
     private Member member;
+    private MemberAuthorityIdDto memberAuthorityIdDto;
 
     @BeforeEach
     void setUp() {
@@ -47,23 +51,52 @@ class DefaultMemberAuthorityServiceTest {
         member.setMemberId("member-id");
         member.setMemberAuthority(memberAuthority2);
 
-        given(memberRepository.findById(member.getMemberId())).willReturn(
-                Optional.ofNullable(member)
-        );
-
-        given(memberAuthorityRepository.findById(memberAuthority1.getMemberAuthorityId())).willReturn(
-                Optional.ofNullable(memberAuthority1)
-        );
+        memberAuthorityIdDto = new MemberAuthorityIdDto(memberAuthority1.getMemberAuthorityId());
     }
 
     @Test
     @Order(1)
     @DisplayName("회원 권한 수정")
     void updateMemberAuthority() {
-        MemberAuthorityIdDto memberAuthorityIdDto = new MemberAuthorityIdDto(memberAuthority1.getMemberAuthorityId());
-
+        given(memberRepository.findById(member.getMemberId())).willReturn(
+                Optional.ofNullable(member)
+        );
+        given(memberAuthorityRepository.findById(memberAuthority1.getMemberAuthorityId())).willReturn(
+                Optional.ofNullable(memberAuthority1)
+        );
         memberAuthorityService.updateMemberAuthority(member.getMemberId(), memberAuthorityIdDto);
-
         assertThat(member.getMemberAuthority()).isEqualTo(memberAuthority1);
+    }
+
+    @Test
+    @Order(2)
+    @DisplayName("회원 권한 수정 살패 - NotFoundMember")
+    void updateMemberAuthorityFailDueToNotFoundMemberError() {
+        given(memberRepository.findById(member.getMemberId())).willReturn(
+                Optional.empty()
+        );
+        given(memberAuthorityRepository.findById(memberAuthority1.getMemberAuthorityId())).willReturn(
+                Optional.ofNullable(memberAuthority1)
+        );
+        String memberId = member.getMemberId();
+        assertThatThrownBy(() -> memberAuthorityService.updateMemberAuthority(memberId, memberAuthorityIdDto))
+                .isInstanceOf(NotFoundMemberException.class)
+                .hasMessageContaining(memberId);
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("회원 권한 수정 실패 - NotFoundAuthority")
+    void updateMemberAuthorityFailDueToNotFoundAuthorityError() {
+        given(memberRepository.findById(member.getMemberId())).willReturn(
+                Optional.ofNullable(member)
+        );
+        given(memberAuthorityRepository.findById(memberAuthority1.getMemberAuthorityId())).willReturn(
+                Optional.empty()
+        );
+        String memberId = member.getMemberId();
+        assertThatThrownBy(() -> memberAuthorityService.updateMemberAuthority(memberId, memberAuthorityIdDto))
+                .isInstanceOf(NotFoundMemberAuthorityException.class)
+                .hasMessageContaining(String.valueOf(memberAuthorityIdDto.getMemberAuthorityId()));
     }
 }
