@@ -33,6 +33,9 @@ Content-Type: application/json
     "name" : "오수빈"
 }
 
+### 회원 정보 목록 조회
+GET /members
+Host: localhost:8080
 
 ### 회원 정보 단건 조회1
 GET /members/naht94
@@ -41,11 +44,6 @@ Host: localhost:8080
 
 ### 회원 정보 단건 조회2
 GET /members/suebin
-Host: localhost:8080
-
-
-### 회원 정보 목록 조회
-GET /members
 Host: localhost:8080
 
 

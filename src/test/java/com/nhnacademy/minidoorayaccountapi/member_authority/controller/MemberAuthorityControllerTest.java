@@ -28,17 +28,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Member Authority Controller Test")
 class MemberAuthorityControllerTest {
-    @MockBean
-    private MemberAuthorityService memberAuthorityService;
-
-    @MockBean
-    private MemberRepository memberRepository;
-
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ObjectMapper objectMapper;
+    @MockBean
+    private MemberRepository memberRepository;
+    @MockBean
+    private MemberAuthorityService memberAuthorityService;
 
     private String testMemberId;
     private MemberAuthority memberAuthority;
@@ -46,6 +43,7 @@ class MemberAuthorityControllerTest {
     @BeforeEach
     void setUp() {
         testMemberId = "test-id";
+
         memberAuthority = new MemberAuthority();
         memberAuthority.setMemberAuthorityId(1);
         memberAuthority.setStatus("ADMIN");

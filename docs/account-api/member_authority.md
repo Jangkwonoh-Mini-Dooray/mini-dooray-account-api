@@ -32,7 +32,7 @@
   Content-Type: application/json
   
   {
-    "status" : "Admin"
+    "memberAuthorityId" : 2
   }
   ```
 

@@ -32,7 +32,7 @@ public class MemberAuthorityController {
     }
 
     @PutMapping
-    public ResponseEntity<MemberIdDto> updateMemberAuthority(@PathVariable("member-id") String memberId,
+    public ResponseEntity<Void> updateMemberAuthority(@PathVariable("member-id") String memberId,
                                                              @Valid @RequestBody MemberAuthorityIdDto memberAuthorityIdDto,
                                                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

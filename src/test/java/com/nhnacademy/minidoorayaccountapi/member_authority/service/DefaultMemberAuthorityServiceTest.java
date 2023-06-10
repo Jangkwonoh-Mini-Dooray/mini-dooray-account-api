@@ -31,12 +31,11 @@ class DefaultMemberAuthorityServiceTest {
     @Autowired
     MemberAuthorityService memberAuthorityService;
     @MockBean
-    MemberAuthorityRepository memberAuthorityRepository;
-    @MockBean
     MemberRepository memberRepository;
+    @MockBean
+    MemberAuthorityRepository memberAuthorityRepository;
 
     private MemberAuthority memberAuthority1;
-    private MemberAuthority memberAuthority2;
     private Member member;
     private MemberAuthorityIdDto memberAuthorityIdDto;
 
@@ -45,7 +44,7 @@ class DefaultMemberAuthorityServiceTest {
         MockitoAnnotations.openMocks(this);
 
         memberAuthority1 = new MemberAuthority(1, "ADMIN");
-        memberAuthority2 = new MemberAuthority(2, "MEMBER");
+        MemberAuthority memberAuthority2 = new MemberAuthority(2, "MEMBER");
 
         member = new Member();
         member.setMemberId("member-id");
