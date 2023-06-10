@@ -1,9 +1,6 @@
 package com.nhnacademy.minidoorayaccountapi.member_status.service;
 
-import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberAuthorityException;
 import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberStatusException;
-import com.nhnacademy.minidoorayaccountapi.member_authority.dto.MemberAuthorityDto;
-import com.nhnacademy.minidoorayaccountapi.member_authority.entity.MemberAuthority;
 import com.nhnacademy.minidoorayaccountapi.member_status.dto.MemberStatusDto;
 import com.nhnacademy.minidoorayaccountapi.member_status.entity.MemberStatus;
 import com.nhnacademy.minidoorayaccountapi.member_status.repository.MemberStatusRepository;

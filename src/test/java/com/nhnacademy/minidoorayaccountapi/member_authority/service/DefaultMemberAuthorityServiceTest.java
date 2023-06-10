@@ -1,11 +1,11 @@
 package com.nhnacademy.minidoorayaccountapi.member_authority.service;
 
-import com.nhnacademy.minidoorayaccountapi.member_authority.dto.MemberAuthorityDto;
+import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
+import com.nhnacademy.minidoorayaccountapi.member.repository.MemberRepository;
+import com.nhnacademy.minidoorayaccountapi.member_authority.dto.MemberAuthorityIdDto;
+import com.nhnacademy.minidoorayaccountapi.member_authority.dto.MemberAuthorityStatusDto;
 import com.nhnacademy.minidoorayaccountapi.member_authority.entity.MemberAuthority;
 import com.nhnacademy.minidoorayaccountapi.member_authority.repository.MemberAuthorityRepository;
-import com.nhnacademy.minidoorayaccountapi.member_status.dto.MemberStatusDto;
-import com.nhnacademy.minidoorayaccountapi.member_status.entity.MemberStatus;
-import com.nhnacademy.minidoorayaccountapi.member_status.repository.MemberStatusRepository;
 import org.junit.jupiter.api.*;
 import org.mockito.ArgumentCaptor;
 import org.mockito.MockitoAnnotations;
@@ -29,34 +29,41 @@ class DefaultMemberAuthorityServiceTest {
     MemberAuthorityService memberAuthorityService;
     @MockBean
     MemberAuthorityRepository memberAuthorityRepository;
+    @MockBean
+    MemberRepository memberRepository;
 
-    private MemberAuthority MemberAuthority1;
-    private MemberAuthority MemberAuthority2;
+    private MemberAuthority memberAuthority1;
+    private MemberAuthority memberAuthority2;
+    private Member member;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        MemberAuthority1 = new MemberAuthority(1, "ADMIN");
-        MemberAuthority2 = new MemberAuthority(2, "MEMBER");
+        memberAuthority1 = new MemberAuthority(1, "ADMIN");
+        memberAuthority2 = new MemberAuthority(2, "MEMBER");
+
+        member = new Member();
+        member.setMemberId("member-id");
+        member.setMemberAuthority(memberAuthority2);
+
+        given(memberRepository.findById(member.getMemberId())).willReturn(
+                Optional.ofNullable(member)
+        );
+
+        given(memberAuthorityRepository.findById(memberAuthority1.getMemberAuthorityId())).willReturn(
+                Optional.ofNullable(memberAuthority1)
+        );
     }
 
     @Test
+    @Order(1)
     @DisplayName("회원 권한 수정")
     void updateMemberAuthority() {
-        MemberAuthorityDto memberAuthorityDto = new MemberAuthorityDto(MemberAuthority1.getStatus());
+        MemberAuthorityIdDto memberAuthorityIdDto = new MemberAuthorityIdDto(memberAuthority1.getMemberAuthorityId());
 
-        given(memberAuthorityRepository.findById(MemberAuthority2.getMemberAuthorityId())).willReturn(
-                Optional.ofNullable(MemberAuthority2)
-        );
+        memberAuthorityService.updateMemberAuthority(member.getMemberId(), memberAuthorityIdDto);
 
-        memberAuthorityService.updateMemberAuthority(MemberAuthority2.getMemberAuthorityId(), memberAuthorityDto);
-
-        ArgumentCaptor<MemberAuthority> captor = ArgumentCaptor.forClass(MemberAuthority.class);
-        verify(memberAuthorityRepository).saveAndFlush(captor.capture());
-
-        MemberAuthority savedMemberAuthority = captor.getValue();
-
-        assertThat(savedMemberAuthority.getStatus()).isEqualTo(memberAuthorityDto.getStatus());
+        assertThat(member.getMemberAuthority()).isEqualTo(memberAuthority1);
     }
 }
