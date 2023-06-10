@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
 import com.nhnacademy.minidoorayaccountapi.member.repository.MemberRepository;
 import com.nhnacademy.minidoorayaccountapi.member_status.dto.MemberStatusDto;
+import com.nhnacademy.minidoorayaccountapi.member_status.dto.MemberStatusIdDto;
 import com.nhnacademy.minidoorayaccountapi.member_status.service.MemberStatusService;
 import com.nhnacademy.minidoorayaccountapi.member_status.entity.MemberStatus;
 import org.junit.jupiter.api.*;
@@ -17,8 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
@@ -29,16 +29,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Member Status Controller Test")
 class MemberStatusControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ObjectMapper objectMapper;
-
     @MockBean
     private MemberRepository memberRepository;
-
     @MockBean
     private MemberStatusService memberStatusService;
 
@@ -73,40 +69,26 @@ class MemberStatusControllerTest {
     @Order(2)
     @DisplayName("멤버 상태 정보 수정")
     void updateMemberStatus() throws Exception {
-        MemberStatusDto memberStatusDto = new MemberStatusDto("휴면");
+        MemberStatusIdDto memberStatusIdDto = new MemberStatusIdDto(2);
 
-        doNothing().when(memberStatusService).updateMemberStatus(anyInt(), any(MemberStatusDto.class));
+        doNothing().when(memberStatusService).updateMemberStatus(anyString(), any(MemberStatusIdDto.class));
 
         mockMvc.perform(put("/members/" + testMemberId + "/status")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(memberStatusDto)))
+                        .content(objectMapper.writeValueAsString(memberStatusIdDto)))
                 .andExpect(status().isOk())
                 .andExpect(result -> assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value()));
     }
 
     @Test
     @Order(3)
-    @DisplayName("회원 상태 정보 수정 실패 - NotFoundMember 오류")
-    void updateMemberStatusFailDueToNotFoundMemberException() throws Exception {
-        MemberStatusDto memberStatusDto = new MemberStatusDto("휴면");
-        String nonMemberId = "non-member-id";
-
-        mockMvc.perform(put("/members/" + nonMemberId + "/status")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(memberStatusDto)))
-                .andExpect(status().isNotFound())
-                .andExpect(result -> assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value()));
-    }
-
-    @Test
-    @Order(4)
     @DisplayName("회원 상태 정보 수정 실패 - BindingResultError 오류")
     void updateMemberStatusFailDueToBindingResultError() throws Exception {
-        MemberStatusDto memberStatusDto = new MemberStatusDto("   ");
+        MemberStatusIdDto memberStatusIdDto = new MemberStatusIdDto(-1);
 
         mockMvc.perform(put("/members/" + testMemberId + "/status")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(memberStatusDto)))
+                        .content(objectMapper.writeValueAsString(memberStatusIdDto)))
                 .andExpect(status().isBadRequest())
                 .andExpect(result -> assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value()));
     }

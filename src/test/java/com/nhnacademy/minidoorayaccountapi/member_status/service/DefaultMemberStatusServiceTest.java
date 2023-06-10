@@ -1,6 +1,10 @@
 package com.nhnacademy.minidoorayaccountapi.member_status.service;
 
+import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
+import com.nhnacademy.minidoorayaccountapi.member.repository.MemberRepository;
+import com.nhnacademy.minidoorayaccountapi.member_authority.dto.MemberAuthorityIdDto;
 import com.nhnacademy.minidoorayaccountapi.member_status.dto.MemberStatusDto;
+import com.nhnacademy.minidoorayaccountapi.member_status.dto.MemberStatusIdDto;
 import com.nhnacademy.minidoorayaccountapi.member_status.entity.MemberStatus;
 import com.nhnacademy.minidoorayaccountapi.member_status.repository.MemberStatusRepository;
 import org.junit.jupiter.api.*;
@@ -25,35 +29,41 @@ class DefaultMemberStatusServiceTest {
     @Autowired
     MemberStatusService memberStatusService;
     @MockBean
+    MemberRepository memberRepository;
+    @MockBean
     MemberStatusRepository memberStatusRepository;
 
     private MemberStatus memberStatus1;
     private MemberStatus memberStatus2;
+    private Member member;
+    private MemberStatusIdDto memberStatusIdDto;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
         memberStatus1 = new MemberStatus(1, "가입");
-        memberStatus2 = new MemberStatus(2, "탈퇴");
+        memberStatus2 = new MemberStatus(2, "휴면");
+
+        member = new Member();
+        member.setMemberId("member-id");
+        member.setMemberStatus(memberStatus1);
+
+        memberStatusIdDto = new MemberStatusIdDto(memberStatus2.getMemberStatusId());
     }
 
     @Test
+    @Order(1)
     @DisplayName("회원 권한 정보 수정")
     void updateMemberStatus() {
-        MemberStatusDto memberStatusDto = new MemberStatusDto(memberStatus1.getStatus());
-
+        given(memberRepository.findById(member.getMemberId())).willReturn(
+                Optional.ofNullable(member)
+        );
         given(memberStatusRepository.findById(memberStatus2.getMemberStatusId())).willReturn(
                 Optional.ofNullable(memberStatus2)
         );
-
-        memberStatusService.updateMemberStatus(memberStatus2.getMemberStatusId(), memberStatusDto);
-
-        ArgumentCaptor<MemberStatus> captor = ArgumentCaptor.forClass(MemberStatus.class);
-        verify(memberStatusRepository).saveAndFlush(captor.capture());
-
-        MemberStatus savedMemberStatus = captor.getValue();
-
-        assertThat(savedMemberStatus.getStatus()).isEqualTo(memberStatusDto.getStatus());
+        memberStatusService.updateMemberStatus(member.getMemberId(), memberStatusIdDto);
+        assertThat(member.getMemberStatus()).isEqualTo(memberStatus2);
     }
+
 }

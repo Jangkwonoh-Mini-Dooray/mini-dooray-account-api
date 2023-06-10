@@ -32,7 +32,7 @@
   Content-Type: application/json
   
   {
-    "status" : "휴면"
+    "memberStatusId" : 2
   }
   ```
 
