@@ -1,7 +1,9 @@
 package com.nhnacademy.minidoorayaccountapi.member.entity;
 
 import com.nhnacademy.minidoorayaccountapi.member_authority.entity.MemberAuthority;
+import com.nhnacademy.minidoorayaccountapi.member_authority.repository.MemberAuthorityRepository;
 import com.nhnacademy.minidoorayaccountapi.member_status.entity.MemberStatus;
+import com.nhnacademy.minidoorayaccountapi.member_status.repository.MemberStatusRepository;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,8 +13,8 @@ import javax.persistence.*;
 @ToString
 @EqualsAndHashCode
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "member")
 public class Member {
     @Id
