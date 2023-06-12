@@ -20,14 +20,25 @@
 
   [
     {
-         "memberId" : "naht94",
-         "email" : "naht94@hanmail.net",
-         "name" : "권형택"
+      "memberId": "addo",
+      "memberAuthorityStatus": "MEMBER",
+      "password": "$2a$16$WYaEQd8Y/MZPNF.UcBajDufTjju/ptXyJOiaray2qENh55JeA/wqi",
+      "email": "addo@gmail.com",
+      "name": "addo"
     },
     {
-         "memberId" : "suebin",
-         "email" : "suebin@gamil.com",
-         "name" : "오수빈"
+      "memberId": "jang",
+      "memberAuthorityStatus": "MEMBER",
+      "password": "$2a$16$SLjGTMFwJE1VSZuSb9Axbu3pIiBOXS1xbcsEN1sg8L1H8aeVhOhR6",
+      "email": "jang@gmail.com",
+      "name": "jang"
+    },
+    {
+      "memberId": "suebin",
+      "memberAuthorityStatus": "MEMBER",
+      "password": "$2a$16$XDl9pceNYIqoxog05QWom.r1TOsd.SLQ0yQBUyO7ybUk/E6YjOgKy",
+      "email": "suebin@gmail.com",
+      "name": "수빈"
     }
   ]
   ```
@@ -37,7 +48,7 @@
 * Request
 
   ```
-  GET http://localhost:8080/members/naht94
+  GET http://localhost:8080/members/suebin
   ```
 
 * Response
@@ -51,9 +62,11 @@
   Connection: keep-alive
 
   {
-    "memberId" : "naht94",
-    "email" : "naht94@hanmail.net",
-    "name" : "권형택"
+    "memberId": "suebin",
+    "memberAuthorityStatus": "MEMBER",
+    "password": "$2a$16$XDl9pceNYIqoxog05QWom.r1TOsd.SLQ0yQBUyO7ybUk/E6YjOgKy",
+    "email": "suebin@gmail.com",
+    "name": "수빈"
   }
   ```
 

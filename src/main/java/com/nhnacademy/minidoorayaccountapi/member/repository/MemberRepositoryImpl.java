@@ -3,10 +3,9 @@ package com.nhnacademy.minidoorayaccountapi.member.repository;
 import com.nhnacademy.minidoorayaccountapi.member.dto.GetMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
 import com.nhnacademy.minidoorayaccountapi.member.entity.QMember;
-import com.nhnacademy.minidoorayaccountapi.member_authority.entity.QMemberAuthority;
-import com.nhnacademy.minidoorayaccountapi.member_authority.repository.MemberAuthorityRepository;
+import com.nhnacademy.minidoorayaccountapi.authority.entity.QMemberAuthority;
+import com.nhnacademy.minidoorayaccountapi.member.authority.repository.MemberAuthorityRepository;
 import com.querydsl.core.types.Projections;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.util.List;

@@ -1,16 +1,16 @@
 ### 회원 정보 삭제1
 DELETE /members/naht94
-Host: localhost:8080
+Host: localhost:9090
 
 
 ### 회원 정보 삭제2
 DELETE /members/suebin
-Host: localhost:8080
+Host: localhost:9090
 
 
 ### 회원 정보 생성1
 POST /members
-Host: localhost:8080
+Host: localhost:9090
 Content-Type: application/json
 
 {
@@ -23,7 +23,7 @@ Content-Type: application/json
 
 ### 회원 정보 생성2
 POST /members
-Host: localhost:8080
+Host: localhost:9090
 Content-Type: application/json
 
 {
@@ -35,21 +35,21 @@ Content-Type: application/json
 
 ### 회원 정보 목록 조회
 GET /members
-Host: localhost:8080
+Host: localhost:9090
 
 ### 회원 정보 단건 조회1
 GET /members/naht94
-Host: localhost:8080
+Host: localhost:9090
 
 
 ### 회원 정보 단건 조회2
 GET /members/suebin
-Host: localhost:8080
+Host: localhost:9090
 
 
 ### 회원 정보 수정1
 PUT /members/naht94
-Host: localhost:8080
+Host: localhost:9090
 Content-Type: application/json
 
 {
@@ -60,7 +60,7 @@ Content-Type: application/json
 
 ### 회원 정보 수정2
 PUT /members/suebin
-Host: localhost:8080
+Host: localhost:9090
 Content-Type: application/json
 
 {

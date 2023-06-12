@@ -1,9 +1,7 @@
 package com.nhnacademy.minidoorayaccountapi.member.entity;
 
-import com.nhnacademy.minidoorayaccountapi.member_authority.entity.MemberAuthority;
-import com.nhnacademy.minidoorayaccountapi.member_authority.repository.MemberAuthorityRepository;
-import com.nhnacademy.minidoorayaccountapi.member_status.entity.MemberStatus;
-import com.nhnacademy.minidoorayaccountapi.member_status.repository.MemberStatusRepository;
+import com.nhnacademy.minidoorayaccountapi.member.authority.entity.MemberAuthority;
+import com.nhnacademy.minidoorayaccountapi.member.status.entity.MemberStatus;
 import lombok.*;
 
 import javax.persistence.*;

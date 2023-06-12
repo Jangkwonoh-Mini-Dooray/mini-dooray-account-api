@@ -9,10 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetMemberDto {
+public class RespMemberDto {
     private String memberId;
-    private String memberAuthorityStatus;
-    private String password;
-    private String email;
-    private String name;
 }
