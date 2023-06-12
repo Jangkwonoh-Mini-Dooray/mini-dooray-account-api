@@ -12,6 +12,8 @@ public interface MemberService {
 
     GetMemberDto getMember(String memberId);
 
+    GetMemberDto getMemberByEmail(String email);
+
     Member createMember(PostMemberDto postMemberDto);
 
     Member updateMember(String memberId, PutMemberDto memberDto);

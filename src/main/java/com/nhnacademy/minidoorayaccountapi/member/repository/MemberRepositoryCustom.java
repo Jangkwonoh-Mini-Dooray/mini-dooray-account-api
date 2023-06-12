@@ -9,4 +9,6 @@ import java.util.List;
 public interface MemberRepositoryCustom {
     List<GetMemberDto> getMembers();
     GetMemberDto getMember(String memberId);
+
+    GetMemberDto getMemberByEmail(String email);
 }

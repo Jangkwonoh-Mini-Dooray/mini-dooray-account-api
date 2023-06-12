@@ -33,6 +33,11 @@ public class MemberController {
         return new ResponseEntity<>(memberService.getMember(memberId), HttpStatus.OK);
     }
 
+    @GetMapping("/{emil}")
+    public ResponseEntity<GetMemberDto> getMemberByEmail(@PathVariable String emil) {
+        return new ResponseEntity<>(memberService.getMemberByEmail(emil), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<RespMemberDto> createMember(@Valid @RequestBody PostMemberDto postMemberDto,
                                                       BindingResult bindingResult) {

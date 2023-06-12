@@ -42,6 +42,12 @@ public class DefaultMemberService implements MemberService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public GetMemberDto getMemberByEmail(String email) {
+        return memberRepository.getMemberByEmail(email);
+    }
+
+    @Override
     @Transactional
     public Member createMember(PostMemberDto postMemberDto) {
         if (memberRepository.existsById(postMemberDto.getMemberId())) {
