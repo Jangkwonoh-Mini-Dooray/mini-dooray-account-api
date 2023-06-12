@@ -33,9 +33,9 @@ public class MemberController {
         return new ResponseEntity<>(memberService.getMember(memberId), HttpStatus.OK);
     }
 
-    @GetMapping("/{emil}")
-    public ResponseEntity<GetMemberDto> getMemberByEmail(@PathVariable String emil) {
-        return new ResponseEntity<>(memberService.getMemberByEmail(emil), HttpStatus.OK);
+    @GetMapping("/email/{email}")
+    public ResponseEntity<GetMemberDto> getMemberByEmail(@PathVariable String email) {
+        return new ResponseEntity<>(memberService.getMemberByEmail(email), HttpStatus.OK);
     }
 
     @PostMapping

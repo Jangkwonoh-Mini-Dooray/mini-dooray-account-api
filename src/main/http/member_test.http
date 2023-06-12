@@ -46,6 +46,10 @@ Host: localhost:9090
 GET /members/suebin
 Host: localhost:9090
 
+### 회원 정보 단건 조회 email1
+GET /members/email/suebin@gmail.com
+Host: localhost:9090
+
 
 ### 회원 정보 수정1
 PUT /members/naht94
