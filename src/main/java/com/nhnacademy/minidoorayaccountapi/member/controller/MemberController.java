@@ -2,8 +2,8 @@ package com.nhnacademy.minidoorayaccountapi.member.controller;
 
 import com.nhnacademy.minidoorayaccountapi.exception.ValidationFailedException;
 import com.nhnacademy.minidoorayaccountapi.member.dto.GetMemberDto;
-import com.nhnacademy.minidoorayaccountapi.member.dto.MemberDto;
-import com.nhnacademy.minidoorayaccountapi.member.dto.MemberIdDto;
+import com.nhnacademy.minidoorayaccountapi.member.dto.PostMemberDto;
+import com.nhnacademy.minidoorayaccountapi.member.dto.RespMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.PutMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
 import com.nhnacademy.minidoorayaccountapi.member.service.MemberService;
@@ -34,26 +34,26 @@ public class MemberController {
     }
 
     @PostMapping
-    public ResponseEntity<MemberIdDto> createMember(@Valid @RequestBody MemberDto postMemberDto,
-                                                    BindingResult bindingResult) {
+    public ResponseEntity<RespMemberDto> createMember(@Valid @RequestBody PostMemberDto postMemberDto,
+                                                      BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new ValidationFailedException(bindingResult);
         }
 
         Member member = memberService.createMember(postMemberDto);
-        MemberIdDto responseDto = new MemberIdDto(member.getMemberId());
+        RespMemberDto responseDto = new RespMemberDto(member.getMemberId());
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
 
     @PutMapping("/{memberId}")
-    public ResponseEntity<MemberIdDto> updateMember(@PathVariable String memberId, @Valid @RequestBody PutMemberDto putMemberDto,
-                                             BindingResult bindingResult) {
+    public ResponseEntity<RespMemberDto> updateMember(@PathVariable String memberId, @Valid @RequestBody PutMemberDto putMemberDto,
+                                                      BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new ValidationFailedException(bindingResult);
         }
         Member member = memberService.updateMember(memberId, putMemberDto);
-        MemberIdDto responseDto = new MemberIdDto(member.getMemberId());
+        RespMemberDto responseDto = new RespMemberDto(member.getMemberId());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
