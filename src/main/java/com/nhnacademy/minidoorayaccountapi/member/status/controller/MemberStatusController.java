@@ -7,6 +7,7 @@ import com.nhnacademy.minidoorayaccountapi.member.status.dto.MemberStatusDto;
 import com.nhnacademy.minidoorayaccountapi.member.status.dto.MemberStatusIdDto;
 import com.nhnacademy.minidoorayaccountapi.member.status.entity.MemberStatus;
 import com.nhnacademy.minidoorayaccountapi.member.status.service.MemberStatusService;
+import com.nhnacademy.minidoorayaccountapi.response.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,17 +28,17 @@ public class MemberStatusController {
                 .orElseThrow(() -> new NotFoundMemberException(memberId))
                 .getMemberStatus();
         MemberStatusDto responseDto = new MemberStatusDto(memberStatus.getStatus());
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        return ResponseEntity.ok().body(responseDto);
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateMemberStatus(@PathVariable("member-id") String memberId,
-                                                   @Valid @RequestBody MemberStatusIdDto memberStatusIdDto,
-                                                   BindingResult bindingResult) {
+    public ResponseEntity<Response> updateMemberStatus(@PathVariable("member-id") String memberId,
+                                                       @Valid @RequestBody MemberStatusIdDto memberStatusIdDto,
+                                                       BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new ValidationFailedException(bindingResult);
         }
         memberStatusService.updateMemberStatus(memberId, memberStatusIdDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().body(new Response("OK"));
     }
 }

@@ -7,6 +7,7 @@ import com.nhnacademy.minidoorayaccountapi.member.dto.RespMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.PutMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
 import com.nhnacademy.minidoorayaccountapi.member.service.MemberService;
+import com.nhnacademy.minidoorayaccountapi.response.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,18 +25,17 @@ public class MemberController {
 
     @GetMapping
     public ResponseEntity<List<GetMemberDto>> getMembers() {
-        return new ResponseEntity<>(memberService.getMembers(), HttpStatus.OK);
+        return ResponseEntity.ok().body(memberService.getMembers());
     }
-
 
     @GetMapping("/{memberId}")
     public ResponseEntity<GetMemberDto> getMember(@PathVariable String memberId) {
-        return new ResponseEntity<>(memberService.getMember(memberId), HttpStatus.OK);
+        return ResponseEntity.ok().body(memberService.getMember(memberId));
     }
 
     @GetMapping("/email/{email}")
     public ResponseEntity<GetMemberDto> getMemberByEmail(@PathVariable String email) {
-        return new ResponseEntity<>(memberService.getMemberByEmail(email), HttpStatus.OK);
+        return ResponseEntity.ok().body(memberService.getMemberByEmail(email));
     }
 
     @PostMapping
@@ -47,7 +47,7 @@ public class MemberController {
 
         Member member = memberService.createMember(postMemberDto);
         RespMemberDto responseDto = new RespMemberDto(member.getMemberId());
-        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
 
@@ -59,13 +59,13 @@ public class MemberController {
         }
         Member member = memberService.updateMember(memberId, putMemberDto);
         RespMemberDto responseDto = new RespMemberDto(member.getMemberId());
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        return ResponseEntity.ok().body(responseDto);
     }
 
     @DeleteMapping("/{memberId}")
-    public ResponseEntity<Void> deleteMember(@PathVariable String memberId) {
+    public ResponseEntity<Response> deleteMember(@PathVariable String memberId) {
         memberService.deleteMember(memberId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new Response("OK"));
     }
 
 }

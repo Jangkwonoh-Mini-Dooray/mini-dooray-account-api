@@ -11,8 +11,12 @@
 //import com.nhnacademy.minidoorayaccountapi.member.status.entity.MemberStatus;
 //import com.nhnacademy.minidoorayaccountapi.member.status.repository.MemberStatusRepository;
 //import org.junit.jupiter.api.*;
+//import org.junit.jupiter.api.extension.ExtendWith;
 //import org.mockito.ArgumentCaptor;
+//import org.mockito.InjectMocks;
+//import org.mockito.Mock;
 //import org.mockito.MockitoAnnotations;
+//import org.mockito.junit.jupiter.MockitoExtension;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 //import org.springframework.boot.test.context.SpringBootTest;
@@ -27,18 +31,18 @@
 //import static org.mockito.BDDMockito.given;
 //import static org.mockito.Mockito.verify;
 //
-//@SpringBootTest
+//@ExtendWith(MockitoExtension.class)
 //@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 //@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.AUTO_CONFIGURED)
 //@DisplayName("Member Service Test")
 //class DefaultMemberServiceTest {
-//    @Autowired
-//    MemberService memberService;
-//    @MockBean
+//    @InjectMocks
+//    DefaultMemberService memberService;
+//    @Mock
 //    MemberRepository memberRepository;
-//    @MockBean
+//    @Mock
 //    MemberAuthorityRepository memberAuthorityRepository;
-//    @MockBean
+//    @Mock
 //    MemberStatusRepository memberStatusRepository;
 //
 //    private Member member1;
@@ -50,8 +54,6 @@
 //
 //    @BeforeEach
 //    void setUp() {
-//        MockitoAnnotations.openMocks(this);
-//
 //        defaultStatus = new MemberStatus(1, "가입");
 //        defaultAuthority = new MemberAuthority(2, "MEMBER");
 //
