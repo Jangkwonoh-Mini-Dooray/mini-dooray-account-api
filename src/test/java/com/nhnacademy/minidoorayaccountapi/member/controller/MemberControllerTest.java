@@ -1,27 +1,37 @@
 package com.nhnacademy.minidoorayaccountapi.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nhnacademy.minidoorayaccountapi.exception.DuplicateMemberIdException;
+import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberAuthorityException;
+import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberStatusException;
 import com.nhnacademy.minidoorayaccountapi.exception.ValidationFailedException;
 import com.nhnacademy.minidoorayaccountapi.member.authority.entity.MemberAuthority;
+import com.nhnacademy.minidoorayaccountapi.member.authority.repository.MemberAuthorityRepository;
 import com.nhnacademy.minidoorayaccountapi.member.dto.GetMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.PostMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.PutMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
+import com.nhnacademy.minidoorayaccountapi.member.repository.MemberRepository;
 import com.nhnacademy.minidoorayaccountapi.member.service.MemberService;
 import com.nhnacademy.minidoorayaccountapi.member.status.entity.MemberStatus;
+import com.nhnacademy.minidoorayaccountapi.member.status.repository.MemberStatusRepository;
+import com.nhnacademy.minidoorayaccountapi.response.Response;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -30,6 +40,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Member Controller Test")
 class MemberControllerTest {
+    @MockBean
+    private MemberRepository memberRepository;
+    @MockBean
+    private MemberStatusRepository memberStatusRepository;
+    @MockBean
+    private MemberAuthorityRepository memberAuthorityRepository;
     @MockBean
     private MemberService memberService;
 
@@ -41,11 +57,17 @@ class MemberControllerTest {
 
     private GetMemberDto member1Dto;
     private GetMemberDto member2Dto;
+    private MemberStatus defaultStatus;
     private MemberAuthority defaultAuthority;
 
     @BeforeEach
     void setUp() {
-        defaultAuthority = new MemberAuthority(2, "MEMBER");
+        defaultStatus = new MemberStatus();
+        defaultStatus.setMemberStatusId(1);
+        defaultStatus.setStatus("가입");
+        defaultAuthority = new MemberAuthority();
+        defaultAuthority.setMemberAuthorityId(2);
+        defaultAuthority.setStatus("MEMBER");
 
         member1Dto = new GetMemberDto();
         member1Dto.setMemberId("member1-id");
@@ -98,14 +120,18 @@ class MemberControllerTest {
     @DisplayName("회원 정보 생성")
     void createMember() throws Exception {
         PostMemberDto memberDto = new PostMemberDto("member3-id", "member3-password", "member3@emil.com", "member3-name");
+
         Member mockMember = new Member();
         mockMember.setMemberId(memberDto.getMemberId());
+        mockMember.setMemberStatus(defaultStatus);
         mockMember.setMemberAuthority(defaultAuthority);
         mockMember.setPassword(memberDto.getPassword());
         mockMember.setEmail(memberDto.getEmail());
         mockMember.setName(memberDto.getName());
 
-        given(memberService.createMember(any(PostMemberDto.class))).willReturn(mockMember);
+        given(memberStatusRepository.findById(anyInt())).willReturn(Optional.of(defaultStatus));
+        given(memberAuthorityRepository.findById(anyInt())).willReturn(Optional.of(defaultAuthority));
+        given(memberService.createMember(any(PostMemberDto.class), any(MemberStatus.class), any(MemberAuthority.class))).willReturn(mockMember);
 
         mockMvc.perform(post("/members")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -115,7 +141,7 @@ class MemberControllerTest {
 
     @Test
     @Order(5)
-    @DisplayName("회원 정보 생성 실패 - BindingResult 오류")
+    @DisplayName("회원 정보 생성 실패 - BindingResult Error")
     void createMemberFailDueToBindingResultError() throws Exception {
         PostMemberDto memberDto = new PostMemberDto("", "", "not_an_email", "");
 
@@ -130,6 +156,57 @@ class MemberControllerTest {
 
     @Test
     @Order(6)
+    @DisplayName("회원 정보 생성 실패 - DuplicateMemberId Error")
+    void createMemberFailDueToDuplicateMemberIdError() throws Exception {
+        PostMemberDto memberDto = new PostMemberDto("existing-id", "existing-password", "existing@email.com", "existing-name");
+
+        given(memberRepository.existsById("existing-id")).willReturn(true);
+
+        mockMvc.perform(post("/members")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(memberDto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> {
+                    assertThat(result.getResolvedException()).isInstanceOfAny(DuplicateMemberIdException.class);
+                });
+    }
+
+    @Test
+    @Order(7)
+    @DisplayName("회원 정보 생성 실패 - NotFoundMemberStatus Error")
+    void createMemberFailDueToNotFoundMemberStatusError() throws Exception {
+        PostMemberDto memberDto = new PostMemberDto("member3-id", "member3-password", "member3@emil.com", "member3-name");
+
+        given(memberAuthorityRepository.findById(anyInt())).willReturn(Optional.of(defaultAuthority));
+
+        mockMvc.perform(post("/members")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(memberDto)))
+                .andExpect(status().isNotFound())
+                .andExpect(result -> {
+                    assertThat(result.getResolvedException()).isInstanceOfAny(NotFoundMemberStatusException.class);
+                });
+    }
+
+    @Test
+    @Order(8)
+    @DisplayName("회원 정보 생성 실패 - NotFoundMemberAuthority Error")
+    void createMemberFailDueToNotFoundMemberAuthorityError() throws Exception {
+        PostMemberDto memberDto = new PostMemberDto("member3-id", "member3-password", "member3@emil.com", "member3-name");
+
+        given(memberStatusRepository.findById(anyInt())).willReturn(Optional.of(defaultStatus));
+
+        mockMvc.perform(post("/members")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(memberDto)))
+                .andExpect(status().isNotFound())
+                .andExpect(result -> {
+                    assertThat(result.getResolvedException()).isInstanceOfAny(NotFoundMemberAuthorityException.class);
+                });
+    }
+
+    @Test
+    @Order(9)
     @DisplayName("회원 정보 수정")
     void updateMember() throws Exception {
         PutMemberDto memberDto = new PutMemberDto("updated-password", "updated@email.com", "updated-name");
@@ -149,7 +226,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @Order(7)
+    @Order(10)
     @DisplayName("회원 정보 수정 실패 - BindingResult 오류")
     void updateMemberFailDueToBindingResultError() throws Exception {
         PutMemberDto memberDto = new PutMemberDto("", "not_an_email", "   ");
@@ -170,7 +247,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @Order(8)
+    @Order(11)
     @DisplayName("회원 정보 삭제")
     void deleteMember() throws Exception {
         mockMvc.perform(delete("/members/member1-id"))
