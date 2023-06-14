@@ -9,8 +9,6 @@ import javax.persistence.Table;
 
 @Getter
 @Setter
-@ToString
-@EqualsAndHashCode
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

@@ -28,26 +28,22 @@ class MemberRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        MemberStatus defaultStatus = new MemberStatus(1, "가입");
         MemberAuthority defaultAuthority = new MemberAuthority(2, "MEMBER");
 
-        testEntityManager.persist(defaultStatus);
         testEntityManager.persist(defaultAuthority);
 
         member1 = new Member();
         member1.setMemberId("member1-id");
         member1.setPassword("member1-password");
-        member1.setEmail("member1-email");
+        member1.setEmail("member1@email.com");
         member1.setName("member1-name");
-        member1.setMemberStatus(defaultStatus);
         member1.setMemberAuthority(defaultAuthority);
 
         member2 = new Member();
         member2.setMemberId("member2-id");
         member2.setPassword("member2-password");
-        member2.setEmail("member2-email");
+        member2.setEmail("member2@email.com");
         member2.setName("member2-name");
-        member2.setMemberStatus(defaultStatus);
         member2.setMemberAuthority(defaultAuthority);
 
         testEntityManager.persist(member1);
@@ -77,9 +73,22 @@ class MemberRepositoryTest {
 
     @Test
     @Order(2)
-    @DisplayName("회원 정보 단건 조회")
+    @DisplayName("회원 정보 단건 조회 By member_id")
     void getMember() {
         GetMemberDto getMemberDto = memberRepository.getMember(member1.getMemberId());
+
+        assertThat(getMemberDto.getMemberId()).isEqualTo(member1.getMemberId());
+        assertThat(getMemberDto.getPassword()).isEqualTo(member1.getPassword());
+        assertThat(getMemberDto.getEmail()).isEqualTo(member1.getEmail());
+        assertThat(getMemberDto.getName()).isEqualTo(member1.getName());
+        assertThat(getMemberDto.getMemberAuthorityStatus()).isEqualTo(member1.getMemberAuthority().getStatus());
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("회원 정보 단건 조회 By member_email")
+    void getMemberByEmail() {
+        GetMemberDto getMemberDto = memberRepository.getMemberByEmail(member1.getEmail());
 
         assertThat(getMemberDto.getMemberId()).isEqualTo(member1.getMemberId());
         assertThat(getMemberDto.getPassword()).isEqualTo(member1.getPassword());
