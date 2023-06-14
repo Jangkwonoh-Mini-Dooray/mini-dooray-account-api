@@ -2,14 +2,12 @@ package com.nhnacademy.minidoorayaccountapi.member.service;
 
 import com.nhnacademy.minidoorayaccountapi.exception.*;
 import com.nhnacademy.minidoorayaccountapi.member.authority.entity.MemberAuthority;
-import com.nhnacademy.minidoorayaccountapi.member.authority.repository.MemberAuthorityRepository;
 import com.nhnacademy.minidoorayaccountapi.member.dto.GetMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.PostMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.PutMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
 import com.nhnacademy.minidoorayaccountapi.member.repository.MemberRepository;
 import com.nhnacademy.minidoorayaccountapi.member.status.entity.MemberStatus;
-import com.nhnacademy.minidoorayaccountapi.member.status.repository.MemberStatusRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -36,10 +34,6 @@ class DefaultMemberServiceTest {
     DefaultMemberService memberService;
     @Mock
     MemberRepository memberRepository;
-    @Mock
-    MemberAuthorityRepository memberAuthorityRepository;
-    @Mock
-    MemberStatusRepository memberStatusRepository;
 
     private Member member1;
     private Member member2;
@@ -154,14 +148,7 @@ class DefaultMemberServiceTest {
     @Order(4)
     @DisplayName("회원 정보 생성")
     void createMember() {
-        given(memberStatusRepository.findById(anyInt())).willReturn(
-                Optional.of(defaultStatus)
-        );
-        given(memberAuthorityRepository.findById(anyInt())).willReturn(
-                Optional.of(defaultAuthority)
-        );
-
-        memberService.createMember(postMemberDto);
+        memberService.createMember(postMemberDto, defaultStatus, defaultAuthority);
 
         ArgumentCaptor<Member> captor = ArgumentCaptor.forClass(Member.class);
         verify(memberRepository).saveAndFlush(captor.capture());
@@ -179,37 +166,6 @@ class DefaultMemberServiceTest {
 
     @Test
     @Order(5)
-    @DisplayName("회원 정보 생성 실패 (default status 존재하지 않음)")
-    void createMemberFailDueToNonExistingStatus() {
-        assertThatThrownBy(() -> memberService.createMember(postMemberDto))
-                .isInstanceOf(NotFoundMemberStatusException.class)
-                .hasMessageContaining(String.valueOf(defaultStatus.getMemberStatusId()));
-    }
-
-    @Test
-    @Order(6)
-    @DisplayName("회원 정보 생성 실패 (default authority 존재하지 않음)")
-    void createMemberFailDueToNonExistingAuthority() {
-        given(memberStatusRepository.findById(anyInt())).willReturn(
-                Optional.of(defaultStatus)
-        );
-        assertThatThrownBy(() -> memberService.createMember(postMemberDto))
-                .isInstanceOf(NotFoundMemberAuthorityException.class)
-                .hasMessageContaining(String.valueOf(defaultAuthority.getMemberAuthorityId()));
-    }
-
-    @Test
-    @Order(7)
-    @DisplayName("회원 정보 생성 실패 (Member ID 중복)")
-    void createMemberFailDueToDuplicateMemberIdException() {
-        given(memberRepository.existsById(anyString())).willReturn(true);
-        assertThatThrownBy(() -> memberService.createMember(postMemberDto))
-                .isInstanceOf(DuplicateMemberIdException.class)
-                .hasMessageContaining("Member ID 중복");
-    }
-
-    @Test
-    @Order(8)
     @DisplayName("회원 정보 수정")
     void updateMember() {
         Member beforeUpdateMember = member1;
@@ -231,7 +187,7 @@ class DefaultMemberServiceTest {
     }
 
     @Test
-    @Order(9)
+    @Order(6)
     @DisplayName("회원 정보 수정 실패 (회원이 존재하지 않음)")
     void updateMemberNonExistingMember() {
         String nonExistentMemberId = "non-existing-member-id";
@@ -242,7 +198,7 @@ class DefaultMemberServiceTest {
     }
 
     @Test
-    @Order(10)
+    @Order(7)
     @DisplayName("회원 정보 삭제")
     void deleteMember() {
         given(memberRepository.existsById(member1.getMemberId())).willReturn(true);
@@ -251,7 +207,7 @@ class DefaultMemberServiceTest {
     }
 
     @Test
-    @Order(11)
+    @Order(8)
     @DisplayName("회원 정보 삭제 실패 (회원이 존재하지 않음)")
     void deleteMemberNonExistingMember() {
         String nonExistentMemberId = "non-existing-member-id";

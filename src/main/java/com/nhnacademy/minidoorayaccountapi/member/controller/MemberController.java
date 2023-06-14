@@ -1,12 +1,20 @@
 package com.nhnacademy.minidoorayaccountapi.member.controller;
 
+import com.nhnacademy.minidoorayaccountapi.exception.DuplicateMemberIdException;
+import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberAuthorityException;
+import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberStatusException;
 import com.nhnacademy.minidoorayaccountapi.exception.ValidationFailedException;
+import com.nhnacademy.minidoorayaccountapi.member.authority.entity.MemberAuthority;
+import com.nhnacademy.minidoorayaccountapi.member.authority.repository.MemberAuthorityRepository;
 import com.nhnacademy.minidoorayaccountapi.member.dto.GetMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.PostMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.RespMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.dto.PutMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
+import com.nhnacademy.minidoorayaccountapi.member.repository.MemberRepository;
 import com.nhnacademy.minidoorayaccountapi.member.service.MemberService;
+import com.nhnacademy.minidoorayaccountapi.member.status.entity.MemberStatus;
+import com.nhnacademy.minidoorayaccountapi.member.status.repository.MemberStatusRepository;
 import com.nhnacademy.minidoorayaccountapi.response.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +29,9 @@ import java.util.List;
 @RequestMapping("/members")
 @RequiredArgsConstructor
 public class MemberController {
+    private final MemberRepository memberRepository;
+    private final MemberStatusRepository memberStatusRepository;
+    private final MemberAuthorityRepository memberAuthorityRepository;
     private final MemberService memberService;
 
     @GetMapping
@@ -44,11 +55,20 @@ public class MemberController {
         if (bindingResult.hasErrors()) {
             throw new ValidationFailedException(bindingResult);
         }
-        Member member = memberService.createMember(postMemberDto);
+        if (memberRepository.existsById(postMemberDto.getMemberId())) {
+            throw new DuplicateMemberIdException("Member ID 중복 : " + postMemberDto.getMemberId());
+        }
+//        `member_status_id`        INT DEFAULT 1,
+//        `authority_id`     INT DEFAULT 2,
+        MemberStatus defaultStatus = memberStatusRepository.findById(1)
+                .orElseThrow(() -> new NotFoundMemberStatusException(1));
+        MemberAuthority defaultAuthority = memberAuthorityRepository.findById(2)
+                .orElseThrow(() -> new NotFoundMemberAuthorityException(2));
+
+        Member member = memberService.createMember(postMemberDto, defaultStatus, defaultAuthority);
         RespMemberDto responseDto = new RespMemberDto(member.getMemberId());
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
-
 
     @PutMapping("/{memberId}")
     public ResponseEntity<RespMemberDto> updateMember(@PathVariable String memberId, @Valid @RequestBody PutMemberDto putMemberDto,

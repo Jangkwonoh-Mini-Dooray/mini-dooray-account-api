@@ -7,16 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class ExceptionController {
-
-    @ExceptionHandler(value = NoSuchElementException.class)
-    public ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException ex) {
-        return buildResponseEntity(ex.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
     @ExceptionHandler(DuplicateMemberIdException.class)
     public ResponseEntity<Object> handleDuplicateDepartmentIdException(DuplicateMemberIdException ex) {
         return buildResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
