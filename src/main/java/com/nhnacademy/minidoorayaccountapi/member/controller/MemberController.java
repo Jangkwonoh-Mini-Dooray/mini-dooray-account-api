@@ -44,7 +44,6 @@ public class MemberController {
         if (bindingResult.hasErrors()) {
             throw new ValidationFailedException(bindingResult);
         }
-
         Member member = memberService.createMember(postMemberDto);
         RespMemberDto responseDto = new RespMemberDto(member.getMemberId());
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);

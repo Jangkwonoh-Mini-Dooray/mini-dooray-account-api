@@ -8,10 +8,7 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@ToString
-@EqualsAndHashCode
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "member")
 public class Member {

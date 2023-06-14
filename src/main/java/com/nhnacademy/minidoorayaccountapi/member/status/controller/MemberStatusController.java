@@ -9,7 +9,6 @@ import com.nhnacademy.minidoorayaccountapi.member.status.entity.MemberStatus;
 import com.nhnacademy.minidoorayaccountapi.member.status.service.MemberStatusService;
 import com.nhnacademy.minidoorayaccountapi.response.Response;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
