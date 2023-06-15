@@ -1,7 +1,6 @@
 package com.nhnacademy.minidoorayaccountapi.member.authority.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nhnacademy.minidoorayaccountapi.member.authority.controller.MemberAuthorityController;
 import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
 import com.nhnacademy.minidoorayaccountapi.member.repository.MemberRepository;
 import com.nhnacademy.minidoorayaccountapi.member.authority.dto.MemberAuthorityIdDto;
@@ -14,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
@@ -46,12 +46,12 @@ class MemberAuthorityControllerTest {
         testMemberId = "test-id";
 
         memberAuthority = new MemberAuthority();
-        memberAuthority.setMemberAuthorityId(1);
-        memberAuthority.setStatus("ADMIN");
+        ReflectionTestUtils.setField(memberAuthority, "memberAuthorityId", 1);
+        ReflectionTestUtils.setField(memberAuthority, "status", "ADMIN");
 
         Member member = new Member();
-        member.setMemberId(testMemberId);
-        member.setMemberAuthority(memberAuthority);
+        ReflectionTestUtils.setField(member, "memberId", testMemberId);
+        ReflectionTestUtils.setField(member, "memberAuthority", memberAuthority);
 
         given(memberRepository.findById(testMemberId)).willReturn(Optional.of(member));
     }

@@ -4,6 +4,7 @@ import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberAuthorityExce
 import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberException;
 import com.nhnacademy.minidoorayaccountapi.member.authority.dto.MemberAuthorityIdDto;
 import com.nhnacademy.minidoorayaccountapi.member.authority.entity.MemberAuthority;
+import com.nhnacademy.minidoorayaccountapi.member.dto.UpdateMemberStatusAuthorityDto;
 import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
 import com.nhnacademy.minidoorayaccountapi.member.repository.MemberRepository;
 import com.nhnacademy.minidoorayaccountapi.member.authority.repository.MemberAuthorityRepository;
@@ -24,7 +25,8 @@ public class DefaultMemberAuthorityService implements MemberAuthorityService{
         MemberAuthority newMemberAuthority = memberAuthorityRepository.findById(memberAuthorityIdDto.getMemberAuthorityId())
                 .orElseThrow(() -> new NotFoundMemberAuthorityException(memberAuthorityIdDto.getMemberAuthorityId()));
 
-        member.setMemberAuthority(newMemberAuthority);
+        UpdateMemberStatusAuthorityDto updateMemberStatusAuthorityDto = new UpdateMemberStatusAuthorityDto(newMemberAuthority);
+        member.updateMemberStatusOrAuthority(updateMemberStatusAuthorityDto);
         memberRepository.saveAndFlush(member);
     }
 

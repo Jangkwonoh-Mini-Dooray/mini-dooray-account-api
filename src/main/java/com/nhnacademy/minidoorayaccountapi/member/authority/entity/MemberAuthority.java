@@ -8,10 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Getter
-@Setter
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @Table(name = "member_authority")
 public class MemberAuthority {
     @Id

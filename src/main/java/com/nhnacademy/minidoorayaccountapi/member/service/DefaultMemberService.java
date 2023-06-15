@@ -44,24 +44,23 @@ public class DefaultMemberService implements MemberService {
     @Override
     @Transactional
     public Member createMember(PostMemberDto postMemberDto, MemberStatus defaultStatus, MemberAuthority defaultAuthority) {
-        Member member = new Member();
-        member.setMemberId(postMemberDto.getMemberId());
-        member.setPassword(postMemberDto.getPassword());
-        member.setEmail(postMemberDto.getEmail());
-        member.setName(postMemberDto.getName());
-        member.setMemberStatus(defaultStatus);
-        member.setMemberAuthority(defaultAuthority);
+        Member member = new Member(
+                postMemberDto.getMemberId(),
+                defaultStatus,
+                defaultAuthority,
+                postMemberDto.getPassword(),
+                postMemberDto.getEmail(),
+                postMemberDto.getName()
+        );
         return memberRepository.saveAndFlush(member);
     }
 
     @Override
     @Transactional
-    public Member updateMember(String memberId, PutMemberDto memberDto) {
+    public Member updateMember(String memberId, PutMemberDto putMemberDto) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundMemberException(memberId));
-        member.setPassword(memberDto.getPassword());
-        member.setEmail(memberDto.getEmail());
-        member.setName(memberDto.getName());
+        member.updateMember(putMemberDto);
         return memberRepository.saveAndFlush(member);
     }
 

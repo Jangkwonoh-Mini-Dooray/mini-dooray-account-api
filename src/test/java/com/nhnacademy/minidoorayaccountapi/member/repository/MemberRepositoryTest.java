@@ -3,12 +3,12 @@ package com.nhnacademy.minidoorayaccountapi.member.repository;
 import com.nhnacademy.minidoorayaccountapi.member.authority.entity.MemberAuthority;
 import com.nhnacademy.minidoorayaccountapi.member.dto.GetMemberDto;
 import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
-import com.nhnacademy.minidoorayaccountapi.member.status.entity.MemberStatus;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
 
@@ -33,18 +33,18 @@ class MemberRepositoryTest {
         testEntityManager.persist(defaultAuthority);
 
         member1 = new Member();
-        member1.setMemberId("member1-id");
-        member1.setPassword("member1-password");
-        member1.setEmail("member1@email.com");
-        member1.setName("member1-name");
-        member1.setMemberAuthority(defaultAuthority);
+        ReflectionTestUtils.setField(member1, "memberId", "member1-id");
+        ReflectionTestUtils.setField(member1, "password", "member1-password");
+        ReflectionTestUtils.setField(member1, "email", "member1@email.com");
+        ReflectionTestUtils.setField(member1, "name", "member1-name");
+        ReflectionTestUtils.setField(member1, "memberAuthority", defaultAuthority);
 
         member2 = new Member();
-        member2.setMemberId("member2-id");
-        member2.setPassword("member2-password");
-        member2.setEmail("member2@email.com");
-        member2.setName("member2-name");
-        member2.setMemberAuthority(defaultAuthority);
+        ReflectionTestUtils.setField(member2, "memberId", "member2-id");
+        ReflectionTestUtils.setField(member2, "password", "member2-password");
+        ReflectionTestUtils.setField(member2, "email", "member2@email.com");
+        ReflectionTestUtils.setField(member2, "name", "member2-name");
+        ReflectionTestUtils.setField(member2, "memberAuthority", defaultAuthority);
 
         testEntityManager.persist(member1);
         testEntityManager.persist(member2);

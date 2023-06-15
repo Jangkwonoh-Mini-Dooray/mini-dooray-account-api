@@ -3,7 +3,6 @@ package com.nhnacademy.minidoorayaccountapi.member.status.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
 import com.nhnacademy.minidoorayaccountapi.member.repository.MemberRepository;
-import com.nhnacademy.minidoorayaccountapi.member.status.controller.MemberStatusController;
 import com.nhnacademy.minidoorayaccountapi.member.status.dto.MemberStatusDto;
 import com.nhnacademy.minidoorayaccountapi.member.status.dto.MemberStatusIdDto;
 import com.nhnacademy.minidoorayaccountapi.member.status.service.MemberStatusService;
@@ -14,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -47,12 +46,12 @@ class MemberStatusControllerTest {
         testMemberId = "test-id";
 
         memberStatus = new MemberStatus();
-        memberStatus.setMemberStatusId(1);
-        memberStatus.setStatus("가입");
+        ReflectionTestUtils.setField(memberStatus, "memberStatusId", 1);
+        ReflectionTestUtils.setField(memberStatus, "status", "가입");
 
         Member member = new Member();
-        member.setMemberId(testMemberId);
-        member.setMemberStatus(memberStatus);
+        ReflectionTestUtils.setField(member, "memberId", testMemberId);
+        ReflectionTestUtils.setField(member, "memberStatus", memberStatus);
 
         given(memberRepository.findById(testMemberId)).willReturn(Optional.of(member));
     }

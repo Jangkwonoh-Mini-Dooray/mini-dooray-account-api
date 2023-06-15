@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -50,43 +51,43 @@ class DefaultMemberServiceTest {
         defaultAuthority = new MemberAuthority(2, "MEMBER");
 
         member1 = new Member();
-        member1.setMemberId("member1-id");
-        member1.setMemberAuthority(defaultAuthority);
-        member1.setPassword("member1-password");
-        member1.setEmail("member1@email.com");
-        member1.setName("member1-name");
+        ReflectionTestUtils.setField(member1, "memberId", "member1-id");
+        ReflectionTestUtils.setField(member1, "password", "member1-password");
+        ReflectionTestUtils.setField(member1, "email", "member1@email.com");
+        ReflectionTestUtils.setField(member1, "name", "member1-name");
+        ReflectionTestUtils.setField(member1, "memberAuthority", defaultAuthority);
 
         member2 = new Member();
-        member2.setMemberId("member2-id");
-        member2.setMemberAuthority(defaultAuthority);
-        member2.setPassword("member1-password");
-        member2.setEmail("member2@email.com");
-        member2.setName("member2-name");
+        ReflectionTestUtils.setField(member2, "memberId", "member2-id");
+        ReflectionTestUtils.setField(member2, "password", "member2-password");
+        ReflectionTestUtils.setField(member2, "email", "member2@email.com");
+        ReflectionTestUtils.setField(member2, "name", "member2-name");
+        ReflectionTestUtils.setField(member2, "memberAuthority", defaultAuthority);
 
         getMember1Dto = new GetMemberDto();
-        getMember1Dto.setMemberId(member1.getMemberId());
-        getMember1Dto.setMemberAuthorityStatus(member1.getMemberAuthority().getStatus());
-        getMember1Dto.setPassword(member1.getPassword());
-        getMember1Dto.setEmail(member1.getEmail());
-        getMember1Dto.setName(member1.getName());
+        ReflectionTestUtils.setField(getMember1Dto, "memberId", member1.getMemberId());
+        ReflectionTestUtils.setField(getMember1Dto, "memberAuthorityStatus", member1.getMemberAuthority().getStatus());
+        ReflectionTestUtils.setField(getMember1Dto, "password", member1.getPassword());
+        ReflectionTestUtils.setField(getMember1Dto, "email", member1.getEmail());
+        ReflectionTestUtils.setField(getMember1Dto, "name", member1.getName());
 
         getMember2Dto = new GetMemberDto();
-        getMember2Dto.setMemberId(member2.getMemberId());
-        getMember2Dto.setMemberAuthorityStatus(member2.getMemberAuthority().getStatus());
-        getMember2Dto.setPassword(member2.getPassword());
-        getMember2Dto.setEmail(member2.getEmail());
-        getMember2Dto.setName(member2.getName());
+        ReflectionTestUtils.setField(getMember2Dto, "memberId", member2.getMemberId());
+        ReflectionTestUtils.setField(getMember2Dto, "memberAuthorityStatus", member2.getMemberAuthority().getStatus());
+        ReflectionTestUtils.setField(getMember2Dto, "password", member2.getPassword());
+        ReflectionTestUtils.setField(getMember2Dto, "email", member2.getEmail());
+        ReflectionTestUtils.setField(getMember2Dto, "name", member2.getName());
 
         postMemberDto = new PostMemberDto();
-        postMemberDto.setMemberId("Dto-id");
-        postMemberDto.setPassword("Dto-password");
-        postMemberDto.setEmail("Dto@email.com");
-        postMemberDto.setName("Dto-name");
+        ReflectionTestUtils.setField(postMemberDto, "memberId", "Dto-id");
+        ReflectionTestUtils.setField(postMemberDto, "password", "Dto-password");
+        ReflectionTestUtils.setField(postMemberDto, "email", "Dto@email.com");
+        ReflectionTestUtils.setField(postMemberDto, "name", "Dto-name");
 
         putMemberDto = new PutMemberDto();
-        putMemberDto.setPassword("Dto-password");
-        putMemberDto.setEmail("Dto@email.com");
-        putMemberDto.setName("Dto-name");
+        ReflectionTestUtils.setField(putMemberDto, "password", "Dto-password");
+        ReflectionTestUtils.setField(putMemberDto, "email", "Dto@email.com");
+        ReflectionTestUtils.setField(putMemberDto, "name", "Dto-name");
     }
 
     @Test
