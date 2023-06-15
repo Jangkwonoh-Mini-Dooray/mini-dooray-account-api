@@ -2,7 +2,6 @@ package com.nhnacademy.minidoorayaccountapi.member.authority.service;
 
 import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberAuthorityException;
 import com.nhnacademy.minidoorayaccountapi.exception.NotFoundMemberException;
-import com.nhnacademy.minidoorayaccountapi.member.authority.service.MemberAuthorityService;
 import com.nhnacademy.minidoorayaccountapi.member.entity.Member;
 import com.nhnacademy.minidoorayaccountapi.member.repository.MemberRepository;
 import com.nhnacademy.minidoorayaccountapi.member.authority.dto.MemberAuthorityIdDto;
@@ -14,13 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -46,8 +45,8 @@ class DefaultMemberAuthorityServiceTest {
         MemberAuthority memberAuthority2 = new MemberAuthority(2, "MEMBER");
 
         member = new Member();
-        member.setMemberId("member-id");
-        member.setMemberAuthority(memberAuthority2);
+        ReflectionTestUtils.setField(member, "memberId", "member-id");
+        ReflectionTestUtils.setField(member, "memberAuthority", memberAuthority2);
 
         memberAuthorityIdDto = new MemberAuthorityIdDto(memberAuthority1.getMemberAuthorityId());
     }

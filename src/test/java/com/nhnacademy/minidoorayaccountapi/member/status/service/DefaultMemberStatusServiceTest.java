@@ -7,20 +7,19 @@ import com.nhnacademy.minidoorayaccountapi.member.repository.MemberRepository;
 import com.nhnacademy.minidoorayaccountapi.member.status.dto.MemberStatusIdDto;
 import com.nhnacademy.minidoorayaccountapi.member.status.entity.MemberStatus;
 import com.nhnacademy.minidoorayaccountapi.member.status.repository.MemberStatusRepository;
-import com.nhnacademy.minidoorayaccountapi.member.status.service.MemberStatusService;
 import org.junit.jupiter.api.*;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -47,8 +46,8 @@ class DefaultMemberStatusServiceTest {
         memberStatus2 = new MemberStatus(2, "탈퇴");
 
         member = new Member();
-        member.setMemberId("member-id");
-        member.setMemberStatus(memberStatus1);
+        ReflectionTestUtils.setField(member, "memberId", "member-id");
+        ReflectionTestUtils.setField(member, "memberStatus", memberStatus1);
 
         memberStatusIdDto = new MemberStatusIdDto(memberStatus2.getMemberStatusId());
     }
