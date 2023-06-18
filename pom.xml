@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.nhnacademy</groupId>
-	<artifactId>mini-dooray-account-api-1</artifactId>
+	<artifactId>mini-dooray-account-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>mini-dooray-account-api-1</name>
+	<name>mini-dooray-account-api</name>
 	<description>Mini Dooray Account API</description>
 	<properties>
 		<java.version>11</java.version>
@@ -108,7 +108,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>mini-dooray-account-api-1</finalName>
+		<finalName>mini-dooray-account-api</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
