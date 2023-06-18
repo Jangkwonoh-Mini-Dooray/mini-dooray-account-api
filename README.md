@@ -155,7 +155,7 @@
   <Response body is empty>
   ```
   
-  # /member_authority
+# /member_authority
 
 ## 회원 권한 정보 조희
 
@@ -205,7 +205,7 @@
   <Response body is empty>
   ```
   
-  # /member_stauts
+# /member_stauts
 
 ## 회원 상태 정보 조희
 
